@@ -1,6 +1,6 @@
 <?php
 
-    require_once "./modelos/VistasModelo.php";
+    require_once "./modelos/vistasModelo.php";
 
     class vistasControlador extends vistasModelo {
 
@@ -10,7 +10,7 @@
         }
 
         /*---------- Controlador obtener vistas ----------*/
-        public function obtener_vistas__controlador() {
+        public function obtener_vistas_controlador() {
             if (isset($_GET['views'])) { // Ver .htaccess, viene por método GET esta variable
                 $ruta = explode("/", $_GET['views']);
                 $respuesta = vistasModelo::obtener_vistas_modelo($ruta[0]);
