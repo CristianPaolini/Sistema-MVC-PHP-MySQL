@@ -7,7 +7,7 @@
             $listaBlanca = ["home", "client-list", "client-new", "client-search",
             "client-update", "company", "item-list", "item-new", "item-search",
             "item-update", "reservation-list", "reservation-new", "reservation-pending",
-            "reservation-reservation"];
+            "reservation-reservation", "reservation-search"];
             if (in_array($vistas, $listaBlanca)) {
                 if (is_file("./vistas/contenidos/".$vistas."-view.php")) {
                     $contenido = "./vistas/contenidos/".$vistas."-view.php";
