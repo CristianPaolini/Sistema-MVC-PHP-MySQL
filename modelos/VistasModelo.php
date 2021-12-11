@@ -8,7 +8,7 @@
             "client-update", "company", "item-list", "item-new", "item-search",
             "item-update", "reservation-list", "reservation-new", "reservation-pending",
             "reservation-reservation", "reservation-search", "reservation-update",
-            "user-list", "user-new"];
+            "user-list", "user-new", "user-search"];
             if (in_array($vistas, $listaBlanca)) {
                 if (is_file("./vistas/contenidos/".$vistas."-view.php")) {
                     $contenido = "./vistas/contenidos/".$vistas."-view.php";
