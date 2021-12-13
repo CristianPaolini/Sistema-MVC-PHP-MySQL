@@ -3,7 +3,7 @@
     const SERVER="localhost";
     const DB="prestamos";
     const USER="root";
-    const PASS="";
+    const PASS=""; //Si no llegase a conectar, la pass es root
 
     const SGBD="mysql:host=".SERVER.";dbname=".DB;
 
