@@ -116,6 +116,23 @@
                 ';
             }
 
+            $ci = 0;
+            for ($i = $pagina; $i <= $Npaginas ; $i++) { 
+                if ($ci >= $botones) { //Para no mostrar por cada registro un botón, se le asigna un máximo (variable botones)
+                    break;
+                }
+
+                if ($pagina == $i) {
+                    $tabla.='<li class="page-item"><a class="page-link active"
+                         href="'.$url.$i.'/">'.$i.'</a></li>'; //Active sombrea
+                } else {
+                    $tabla.='<li class="page-item"><a class="page-link"
+                         href="'.$url.$i.'/">'.$i.'</a></li>';
+                }
+                $ci++;
+                
+            }
+
             if ($pagina == $Npaginas) {
                 $tabla.='<li class="page-item disabled"><a class="page-link"><i
                     class="fas fa-angle-double-right"></i></a></li>';
