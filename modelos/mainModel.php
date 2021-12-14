@@ -23,7 +23,7 @@
         }
 
         /*---------- Encriptar cadenas ----------*/
-        public function encryption($string){ //Public porque va a ser empleada en múltiples Views.
+        public function encryption($string) { //Public porque va a ser empleada en múltiples Views.
 			$output = FALSE;
 			$key = hash('sha256', SECRET_KEY);
 			$iv = substr(hash('sha256', SECRET_IV), 0, 16);
@@ -33,11 +33,20 @@
 		}
 
         /*---------- Desencriptar cadenas ----------*/
-		protected static function decryption($string){
+		protected static function decryption($string) {
 			$key = hash('sha256', SECRET_KEY);
 			$iv = substr(hash('sha256', SECRET_IV), 0, 16);
 			$output = openssl_decrypt(base64_decode($string), METHOD, $key, 0, $iv);
 			return $output;
 		}
+
+        /*---------- Función generar códigos aleatorios ----------*/
+        protected static function generar_codigo_aleatorio($letra, $longitud, $numero) {
+            for($i = 1; $i <= $longitud; $i++) {
+                $aleatorio = rand(0, 9);
+                $letra.=$aleatorio; //Concatena
+            }
+            return $letra."-".$numero;
+        }
 
     }
