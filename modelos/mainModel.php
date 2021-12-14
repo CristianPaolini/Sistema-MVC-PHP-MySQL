@@ -81,4 +81,23 @@
 
         }
 
+        /*---------- Función verificar datos ----------*/
+        protected static function verificar_datos($filtro, $cadena) {
+            if (preg_match("/^".$filtro."$/", $cadena)) {
+                return false;   //Retorna false si la cadena no incumple ninguna validación. Si incumple al menos una, retorna true
+            } else {
+                return true;
+            }           
+        }
+
+        /*---------- Función verificar fechas ----------*/
+        protected static function verificar_fecha($fecha) {
+            $valores = explode('-', $fecha);
+            if (count($valores) == 3 && checkdate($valores[1], $valores[2], $valores[0])) { //Se ponen los índices en ese orden ya que 
+                return false;                                                               //checkdate recibe month, day y year (en ese orden)
+            } else {
+               return true; //Devuelve true si hay error en fecha. De lo contrario, devuelve false
+            }
+        }
+
     }
