@@ -44,7 +44,7 @@
 					<div class="col-12 col-md-4">
 						<div class="form-group">
 							<label for="usuario_apellido" class="bmd-label-floating">Apellidos</label>
-							<input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,35}" class="form-control" name="usuario_apellido_reg" id="usuario_apellido" maxlength="35">
+							<input type="text" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}" class="form-control" name="usuario_apellido_reg" id="usuario_apellido" maxlength="35">
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
