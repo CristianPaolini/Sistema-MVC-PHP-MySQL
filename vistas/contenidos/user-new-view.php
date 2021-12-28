@@ -22,7 +22,7 @@
 </div>
 
 <div class="container-fluid">
-	<form class="form-neon FormularioAjax" action="" method="POST" data-form="save"
+	<form class="form-neon FormularioAjax" action="<?php echo SERVERURL; ?>ajax/usuarioAjax.php" method="POST" data-form="save"
 	 autocomplete="off">
 		<fieldset>
 			<legend><i class="far fa-address-card"></i> &nbsp; Información personal</legend>
@@ -105,7 +105,7 @@
 						<p><span class="badge badge-dark">Registrar</span> Solo permisos para registrar</p>
 						<div class="form-group">
 							<select class="form-control" name="usuario_privilegio_reg">
-								<option value="" selected="" disabled="">Seleccione una opción</option>
+								<option value="" selected="">Seleccione una opción</option>
 								<option value="1">Control total</option>
 								<option value="2">Edición</option>
 								<option value="3">Registrar</option>
