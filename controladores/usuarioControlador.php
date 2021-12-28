@@ -29,8 +29,31 @@
              $clave1 == "" || $clave2 == "") {
                 $alerta = [
                     "Alerta"=>"simple",
-                    "Titulo"=>"Ocurrio un error inesperado",
+                    "Titulo"=>"Ocurrió un error inesperado",
                     "Texto"=>"No has completado todos los campos obligatorios.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*---------- Verificar integridad de los datos ----------*/
+            if (mainModel::verificar_datos("[0-9-]{10,20}", $dni)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de DNI no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_datos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,35}", $nombre)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de NOMBRE no es válido.",
                     "Tipo"=>"error"
                 ];
                 echo json_encode($alerta);
