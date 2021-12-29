@@ -96,6 +96,30 @@
                     exit();
                 }
             }
+
+            if (mainModel::verificar_datos("[a-zA-Z0-9]{1,35}", $usuario)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de NOMBRE DE USUARIO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if(mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}", $clave1) ||
+                mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}", $clave2)){
+				$alerta=[
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"El formato de CLAVES no es válido.",
+					"Tipo"=>"error"
+				];
+				echo json_encode($alerta);
+				exit();
+			}
+
         }
 
     }
