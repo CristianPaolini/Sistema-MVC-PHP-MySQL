@@ -108,9 +108,9 @@
                 exit();
             }
 
-            if(mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}", $clave1) ||
+            if (mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}", $clave1) ||
                 mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}", $clave2)){
-				$alerta=[
+				$alerta = [
 					"Alerta"=>"simple",
 					"Titulo"=>"Ocurrió un error inesperado",
 					"Texto"=>"El formato de CLAVES no es válido.",
@@ -124,7 +124,7 @@
             $check_dni = mainModel::ejecutar_consulta_simple("SELECT usuario_dni FROM usuario
                 WHERE usuario_dni = '$dni'");
             if ($check_dni->rowCount() > 0) {
-                $alerta=[
+                $alerta = [
 					"Alerta"=>"simple",
 					"Titulo"=>"Ocurrió un error inesperado",
 					"Texto"=>"El DNI ingresado ya se encuentra registrado en el sistema.",
@@ -138,7 +138,7 @@
             $check_user = mainModel::ejecutar_consulta_simple("SELECT usuario_usuario FROM usuario
                 WHERE usuario_usuario = '$usuario'");
             if ($check_user->rowCount() > 0) {
-                $alerta=[
+                $alerta = [
 					"Alerta"=>"simple",
 					"Titulo"=>"Ocurrió un error inesperado",
 					"Texto"=>"El NOMBRE DE USUARIO ingresado ya se encuentra registrado en el sistema.",
@@ -154,7 +154,7 @@
                     $check_email = mainModel::ejecutar_consulta_simple("SELECT usuario_email FROM usuario
                         WHERE usuario_email = '$email'");
                     if ($check_email->rowCount() > 0) {
-                        $alerta=[
+                        $alerta = [
                             "Alerta"=>"simple",
                             "Titulo"=>"Ocurrió un error inesperado",
                             "Texto"=>"El EMAIL ingresado ya se encuentra registrado en el sistema.",
@@ -164,7 +164,7 @@
                         exit();
                     }
                 } else {
-                    $alerta=[
+                    $alerta = [
                         "Alerta"=>"simple",
                         "Titulo"=>"Ocurrió un error inesperado",
                         "Texto"=>"El formato de EMAIL ingresado no es válido.",
@@ -175,6 +175,22 @@
                 }
                 
             }
+
+            /*---------- Comprobar claves ----------*/
+            if ($clave1 != $clave2) {
+				$alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"Las claves que acaba de ingresar no coinciden.",
+					"Tipo"=>"error"
+				];
+				echo json_encode($alerta);
+				exit();
+			} else {
+				$clave = mainModel::encryption($clave1);
+			}
+            
+
 
         }
 
