@@ -24,7 +24,6 @@
             $privilegio = mainModel::limpiar_cadena($_POST['usuario_privilegio_reg']);
 
             /*---------- Comprobar campos vacíos ----------*/
-
             if ($dni == "" || $nombre == "" || $apellido == "" || $usuario == "" ||
              $clave1 == "" || $clave2 == "") {
                 $alerta = [
@@ -190,7 +189,50 @@
 				$clave = mainModel::encryption($clave1);
 			}
             
+            /*---------- Comprobar privilegio ----------*/
+            if ($privilegio < 1 || $privilegio > 3) {
+                $alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"No ha seleccionado un privilegio.",
+					"Tipo"=>"error"
+				];
+				echo json_encode($alerta);
+				exit();
+            }
 
+            $datos_usuario_reg = [
+                "DNI"=>$dni,
+                "Nombre"=>$nombre,
+                "Apellido"=>$apellido,
+                "Telefono"=>$telefono,
+                "Direccion"=>$direccion,
+                "Email"=>$email,
+                "Usuario"=>$usuario,
+                "Clave"=>$clave,
+                "Estado"=>"Activa",
+                "Privilegio"=>$privilegio
+            ];
+
+            $agregar_usuario = usuarioModelo::agregar_usuario_modelo($datos_usuario_reg);
+
+            if ($agregar_usuario->rowCount() == 1) {
+                $alerta = [
+					"Alerta"=>"limpiar",
+					"Titulo"=>"Usuario registrado",
+					"Texto"=>"Los datos del usuario han sido registrados exitosamente.",
+					"Tipo"=>"success"
+				];
+            } else {
+                $alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"No se pudo registrar el usuario.",
+					"Tipo"=>"error"
+				];
+            }
+            echo json_encode($alerta);
+            /* Fin del controlador */
 
         }
 
