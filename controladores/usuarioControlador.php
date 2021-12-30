@@ -23,7 +23,7 @@
             
             $privilegio = mainModel::limpiar_cadena($_POST['usuario_privilegio_reg']);
 
-            /*---------- Comprobar campos vacíos ----------*/
+            /*== Comprobar campos vacíos ==*/
             if ($dni == "" || $nombre == "" || $apellido == "" || $usuario == "" ||
              $clave1 == "" || $clave2 == "") {
                 $alerta = [
@@ -36,7 +36,7 @@
                 exit();
             }
 
-            /*---------- Verificar integridad de los datos ----------*/
+            /*== Verificar integridad de los datos ==*/
             if (mainModel::verificar_datos("[0-9-]{10,20}", $dni)) {
                 $alerta = [
                     "Alerta"=>"simple",
@@ -119,7 +119,7 @@
 				exit();
 			}
 
-            /*---------- Comprobar que el DNI no esté reg. en BD ----------*/
+            /*== Comprobar que el DNI no esté reg. en BD ==*/
             $check_dni = mainModel::ejecutar_consulta_simple("SELECT usuario_dni FROM usuario
                 WHERE usuario_dni = '$dni'");
             if ($check_dni->rowCount() > 0) {
@@ -133,7 +133,7 @@
 				exit();
             }
 
-            /*---------- Comprobar usuario ----------*/
+            /*== Comprobar usuario ==*/
             $check_user = mainModel::ejecutar_consulta_simple("SELECT usuario_usuario FROM usuario
                 WHERE usuario_usuario = '$usuario'");
             if ($check_user->rowCount() > 0) {
@@ -147,7 +147,7 @@
 				exit();
             }
 
-            /*---------- Comprobar email ----------*/
+            /*== Comprobar email ==*/
             if ($email != "") {
                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $check_email = mainModel::ejecutar_consulta_simple("SELECT usuario_email FROM usuario
@@ -175,7 +175,7 @@
                 
             }
 
-            /*---------- Comprobar claves ----------*/
+            /*== Comprobar claves ==*/
             if ($clave1 != $clave2) {
 				$alerta = [
 					"Alerta"=>"simple",
@@ -189,7 +189,7 @@
 				$clave = mainModel::encryption($clave1);
 			}
             
-            /*---------- Comprobar privilegio ----------*/
+            /*== Comprobar privilegio ==*/
             if ($privilegio < 1 || $privilegio > 3) {
                 $alerta = [
 					"Alerta"=>"simple",
