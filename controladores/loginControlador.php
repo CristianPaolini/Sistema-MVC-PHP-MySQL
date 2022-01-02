@@ -90,5 +90,16 @@ if ($peticionAjax) {
             }
             
 
-        }
+        } /* Fin controlador */
+
+        /*---------- Controlador forzar cierre de sesión ----------*/
+        public function forzar_cierre_sesion_controlador() {
+            session_unset();
+            session_destroy();
+            if (headers_sent()) {
+                return "<script> window.location.href='".SERVERURL."login/'; </script>";
+            } else {
+                return header("Location: ".SERVERURL."login/");
+            }
+        } /* Fin controlador */
     }
