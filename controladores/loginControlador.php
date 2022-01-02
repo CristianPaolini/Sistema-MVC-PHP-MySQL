@@ -60,5 +60,35 @@ if ($peticionAjax) {
                 "Clave"=>$clave
             ];
 
+            $datos_cuenta = loginModelo::iniciar_sesion_modelo($datos_login);
+
+            if ($datos_cuenta->rowCount() == 1) {
+                $row = $datos_cuenta->fetch();
+
+                session_start(['name'=>'SPM']); //Inicio sesión
+
+                $_SESSION['id_spm'] = $row['usuario_id']; //Se guarda el id del usuario logueado en la sesión
+                $_SESSION['nombre_spm'] = $row['usuario_nombre'];
+                $_SESSION['apellido_spm'] = $row['usuario_apellido'];
+                $_SESSION['usuario_spm'] = $row['usuario_usuario'];
+                $_SESSION['privilegio_spm'] = $row['usuario_privilegio'];
+                $_SESSION['token_spm'] = md5(uniqid(mt_rand(), true));
+
+                return header("Location: ".SERVERURL."home/");
+
+            } else {
+                echo '
+                <script>
+                    Swal.fire({
+                        title: "Ocurrió un error inesperado",
+                        text: "El formato de USUARIO y/o CLAVE no es válido.",
+                        type: "error",
+                        confirmButtonText: "Aceptar"
+                    });
+                </script>
+                ';
+            }
+            
+
         }
     }
