@@ -25,5 +25,40 @@ if ($peticionAjax) {
                 </script>
                 ';
             }
+
+            /*== Verificar integridad de los datos ==*/
+            if (mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}", $usuario)) {
+                echo '
+                <script>
+                    Swal.fire({
+                        title: "Ocurrió un error inesperado",
+                        text: "El formato de NOMBRE DE USUARIO no es válido.",
+                        type: "error",
+                        confirmButtonText: "Aceptar"
+                    });
+                </script>
+                ';
+            }
+
+            if (mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}", $clave)) {
+                echo '
+                <script>
+                    Swal.fire({
+                        title: "Ocurrió un error inesperado",
+                        text: "El formato de CLAVE no es válido.",
+                        type: "error",
+                        confirmButtonText: "Aceptar"
+                    });
+                </script>
+                ';
+            }
+
+            $clave = mainModel::encryption($clave);
+
+            $datos_login = [
+                "Usuario"=>$usuario,
+                "Clave"=>$clave
+            ];
+
         }
     }
