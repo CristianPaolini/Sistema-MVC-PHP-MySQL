@@ -23,3 +23,12 @@
         </form>
     </div>
 </div>
+<?php 
+    if (isset($_POST['usuario_log']) && isset($_POST['clave_log'])) { //Si ambos se encuentran con valor, quiere decir que se ha llenado el formulario y se ha logueado
+        require_once "./controladores/loginControlador.php";
+
+        $ins_login = new loginControlador();
+
+        echo $ins_login->iniciar_sesion_controlador();
+    }
+?>

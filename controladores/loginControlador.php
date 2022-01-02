@@ -81,7 +81,7 @@ if ($peticionAjax) {
                 <script>
                     Swal.fire({
                         title: "Ocurrió un error inesperado",
-                        text: "El formato de USUARIO y/o CLAVE no es válido.",
+                        text: "El NOMBRE DE USUARIO ingresado no existe o la CLAVE es inválida.",
                         type: "error",
                         confirmButtonText: "Aceptar"
                     });
