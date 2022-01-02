@@ -104,7 +104,7 @@ if ($peticionAjax) {
         } /* Fin controlador */
 
         /*---------- Controlador cierre de sesión ----------*/
-        public function cierre_sesion_controlador() {
+        public function cerrar_sesion_controlador() {
             session_start(['name'=>'SPM']);
             $token = mainModel::decryption($_POST['token']);
             $usuario = mainModel::decryption($_POST['usuario']);
