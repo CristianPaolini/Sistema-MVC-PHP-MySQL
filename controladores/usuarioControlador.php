@@ -254,6 +254,62 @@
             $pagina = (isset($pagina) && $pagina > 0) ? (int) $pagina : 1 ;
             $inicio = ($pagina > 0) ? (($pagina * $registros) - $registros) : 0 ;
 
+            if (isset($busqueda) && $busqueda != "") {
+                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM usuario WHERE ((usuario_id !='$id'
+                    AND usuario_id !='1') AND (usuario_dni LIKE '%$busqueda%' OR usuario_nombre
+                    LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_telefono
+                    LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR usuario_usuario LIKE
+                    '%$busqueda%')) ORDER BY usuario_apellido ASC LIMIT $inicio, $registros";
+            } else {
+                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM usuario WHERE usuario_id !='$id'
+                    AND usuario_id !='1' ORDER BY usuario_apellido ASC LIMIT $inicio, $registros";
+            }
+
+            $conexion = mainModel::conectar();
+
+            $datos = $conexion->query($consulta);
+            $datos = $datos->fetchAll();
+
+            $total = $conexion->query("SELECT FOUND_ROWS()");
+            $total = (int)$total->fetchColumn();
+
+            $Npaginas = ceil($total / $registros);
+
+            $tabla.='<div class="table-responsive">
+            <table class="table table-dark table-sm">
+                <thead>
+                    <tr class="text-center roboto-medium">
+                        <th>#</th>
+                        <th>DNI</th>
+                        <th>NOMBRE</th>
+                        <th>APELLIDO</th>
+                        <th>TELÉFONO</th>
+                        <th>USUARIO</th>
+                        <th>EMAIL</th>
+                        <th>ACTUALIZAR</th>
+                        <th>ELIMINAR</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+                if ($total >= 1 && $pagina <= $Npaginas) {
+                    $contador = $inicio + 1;
+                    foreach ($datos as $rows) {
+                        $tabla.='';
+                    }
+                } else {
+                    if ($total >= 1) {
+                        $tabla.='<tr class="text-center" ><td colspan="9">
+                        <a href="'.url.'" class="btn btn-raised btn-primary btn-sm">Click aquí para recargar el listado</a>
+                        </td></tr>';
+                    } else {
+                        $tabla.='<tr class="text-center" ><td colspan="9">No hay registros en el
+                    sistema.</td></tr>';
+                    }
+                    
+                }
+                $tabla.='</tbody></table></div>';
+
         } /* Fin del controlador */
     }
     
