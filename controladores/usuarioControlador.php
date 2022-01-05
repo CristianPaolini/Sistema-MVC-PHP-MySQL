@@ -282,7 +282,6 @@
                         <th>#</th>
                         <th>DNI</th>
                         <th>NOMBRE</th>
-                        <th>APELLIDO</th>
                         <th>TELÉFONO</th>
                         <th>USUARIO</th>
                         <th>EMAIL</th>
@@ -297,13 +296,12 @@
                     foreach ($datos as $rows) {
                         $tabla.='
                         <tr class="text-center" >
-                            <td>1</td>
-                            <td>03045643</td>
-                            <td>NOMBRE DE USUARIO</td>
-                            <td>APELLIDO DE USUARIO</td>
-                            <td>2345456</td>
-                            <td>NOMBRE DE USUARIO</td>
-                            <td>ADMIN@ADMIN.COM</td>
+                            <td>'.$contador.'</td>
+                            <td>'.$rows['usuario_dni'].'</td>
+                            <td>'.$rows['usuario_nombre'].' '.$rows['usuario_apellido'].'</td>
+                            <td>'.$rows['usuario_telefono'].'</td>
+                            <td>'.$rows['usuario_usuario'].'</td>
+                            <td>'.$rows['usuario_email'].'</td>
                             <td>
                                 <a href="<?php echo SERVERURL; ?>user-update/" class="btn btn-success">
                                         <i class="fas fa-sync-alt"></i>	
@@ -322,7 +320,7 @@
                 } else {
                     if ($total >= 1) {
                         $tabla.='<tr class="text-center" ><td colspan="9">
-                        <a href="'.url.'" class="btn btn-raised btn-primary btn-sm">Click aquí para recargar el listado</a>
+                        <a href="'.$url.'" class="btn btn-raised btn-primary btn-sm">Click aquí para recargar el listado</a>
                         </td></tr>';
                     } else {
                         $tabla.='<tr class="text-center" ><td colspan="9">No hay registros en el
@@ -331,6 +329,10 @@
                     
                 }
                 $tabla.='</tbody></table></div>';
+
+                if ($total >= 1 && $pagina <= $Npaginas) {
+                    $tabla.=mainModel::paginador_tablas($pagina, $Npaginas, $url, 7);
+                }
 
                 return $tabla;
 
