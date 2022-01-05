@@ -236,5 +236,24 @@
 
         }
 
+        /*---------- Controlador paginar usuario ----------*/
+        public function paginador_usuario_controlador($pagina, $registros, $privilegio,
+         $id, $url, $busqueda) {
+
+            $pagina = mainModel::limpiar_cadena($pagina);
+            $registros = mainModel::limpiar_cadena($registros);
+            $privilegio = mainModel::limpiar_cadena($privilegio);
+            $id = mainModel::limpiar_cadena($id);
+
+            $url = mainModel::limpiar_cadena($url);
+            $url = SERVERURL.$url."/";
+
+            $busqueda = mainModel::limpiar_cadena($busqueda);
+            $tabla = "";
+
+            $pagina = (isset($pagina) && $pagina > 0) ? (int) $pagina : 1 ;
+            $inicio = ($pagina > 0) ? (($pagina * $registros) - $registros) : 0 ;
+
+        } /* Fin del controlador */
     }
     
