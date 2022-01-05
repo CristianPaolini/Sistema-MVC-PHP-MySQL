@@ -295,7 +295,29 @@
                 if ($total >= 1 && $pagina <= $Npaginas) {
                     $contador = $inicio + 1;
                     foreach ($datos as $rows) {
-                        $tabla.='';
+                        $tabla.='
+                        <tr class="text-center" >
+                            <td>1</td>
+                            <td>03045643</td>
+                            <td>NOMBRE DE USUARIO</td>
+                            <td>APELLIDO DE USUARIO</td>
+                            <td>2345456</td>
+                            <td>NOMBRE DE USUARIO</td>
+                            <td>ADMIN@ADMIN.COM</td>
+                            <td>
+                                <a href="<?php echo SERVERURL; ?>user-update/" class="btn btn-success">
+                                        <i class="fas fa-sync-alt"></i>	
+                                </a>
+                            </td>
+                            <td>
+                                <form action="">
+                                    <button type="button" class="btn btn-warning">
+                                            <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </td>
+                    </tr>';
+                    $contador++;
                     }
                 } else {
                     if ($total >= 1) {
@@ -309,6 +331,8 @@
                     
                 }
                 $tabla.='</tbody></table></div>';
+
+                return $tabla;
 
         } /* Fin del controlador */
     }

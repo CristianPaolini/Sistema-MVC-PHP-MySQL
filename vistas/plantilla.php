@@ -21,6 +21,8 @@
         } else {
             session_start(['name'=>'SPM']);
 
+            $pagina = explode("/", $_GET['views']);
+
             require_once "./controladores/loginControlador.php";
             $lc = new loginControlador();
 
