@@ -293,6 +293,7 @@
 
                 if ($total >= 1 && $pagina <= $Npaginas) {
                     $contador = $inicio + 1;
+                    $reg_inicio = $inicio + 1;
                     foreach ($datos as $rows) {
                         $tabla.='
                         <tr class="text-center" >
@@ -303,20 +304,25 @@
                             <td>'.$rows['usuario_usuario'].'</td>
                             <td>'.$rows['usuario_email'].'</td>
                             <td>
-                                <a href="<?php echo SERVERURL; ?>user-update/" class="btn btn-success">
+                                <a href="'.SERVERURL.'user-update/'.mainModel::encryption($rows['usuario_id']).'/" 
+                                class="btn btn-success">
                                         <i class="fas fa-sync-alt"></i>	
                                 </a>
                             </td>
                             <td>
-                                <form action="">
-                                    <button type="button" class="btn btn-warning">
+                                <form class="FormularioAjax" action="'.SERVERURL.'ajax/usuarioAjax.php"
+                                    method="POST" data-form="delete"
+                                    autocomplete="off">
+                                    <input type="hidden" name="usuario_id_del" value="'.mainModel::encryption($rows['usuario_id']).'">
+                                    <button type="submit" class="btn btn-warning">
                                             <i class="far fa-trash-alt"></i>
                                     </button>
                                 </form>
                             </td>
-                    </tr>';
-                    $contador++;
+                        </tr>';
+                        $contador++;
                     }
+                    $reg_final = $contador - 1;
                 } else {
                     if ($total >= 1) {
                         $tabla.='<tr class="text-center" ><td colspan="9">
@@ -329,6 +335,11 @@
                     
                 }
                 $tabla.='</tbody></table></div>';
+
+                if ($total >= 1) {
+                    $tabla.='<p class="text-right">Mostrando usuario(s) '.$reg_inicio.'
+                     al '.$reg_final.' de un total de '.$total.'</p>';
+                }
 
                 if ($total >= 1 && $pagina <= $Npaginas) {
                     $tabla.=mainModel::paginador_tablas($pagina, $Npaginas, $url, 7);
