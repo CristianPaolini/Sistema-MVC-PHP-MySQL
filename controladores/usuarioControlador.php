@@ -398,6 +398,19 @@
 				exit();
             }
 
+            /* comprobando privilegios */
+            session_start(['name'=>'SPM']);
+            if ($_SESSION['privilegio_spm'] != 1) {
+                $alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"No tiene los permisos necesarios para realizar esta operación.",
+					"Tipo"=>"error"
+				];
+				echo json_encode($alerta);
+				exit();
+            }
+
         } /* Fin del controlador */
     }
     
