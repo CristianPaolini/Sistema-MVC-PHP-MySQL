@@ -366,6 +366,20 @@
 				exit();
             }
 
+            /* comprobando el usuario en BD */
+            $check_usuario = mainModel::ejecutar_consulta_simple("SELECT usuario_id FROM
+                usuario WHERE usuario_id = '$id'");
+
+            if ($check_usuario->rowCount() <= 0) {
+                $alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"El usuario que intenta eliminar no existe en el sistema.",
+					"Tipo"=>"error"
+				];
+				echo json_encode($alerta);
+				exit();
+            }
 
         } /* Fin del controlador */
     }
