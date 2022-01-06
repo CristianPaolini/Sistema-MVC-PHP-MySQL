@@ -381,6 +381,23 @@
 				exit();
             }
 
+            /* comprobando los préstamos */
+            $check_prestamos = mainModel::ejecutar_consulta_simple("SELECT usuario_id FROM
+                prestamo WHERE usuario_id = '$id' LIMIT 1"); // Con que tenga uno, ya es suficiente. No es necesario traer todos los préstamos de ese usuario con la query
+
+            if ($check_prestamos->rowCount() > 0) {
+                $alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"No se puede eliminar el usuario, ya que tiene préstamos
+                        asociados, se recomienda deshabilitar el usuario si ya no será
+                        utilizado.",
+					"Tipo"=>"error"
+				];
+				echo json_encode($alerta);
+				exit();
+            }
+
         } /* Fin del controlador */
     }
     
