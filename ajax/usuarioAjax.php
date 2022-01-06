@@ -2,7 +2,7 @@
     $peticionAjax = true;
     require_once "../config/APP.php";
 
-    if (isset($_POST['usuario_dni_reg'])) {
+    if (isset($_POST['usuario_dni_reg']) || isset($_POST['usuario_id_del'])) { // Si es formulario de registro entra por acá. También si viene por eliminar usuario
 
         /*---------- Instancia al controlador ----------*/
         require_once "../controladores/usuarioControlador.php";
@@ -13,6 +13,13 @@
         if (isset($_POST['usuario_dni_reg']) && isset($_POST['usuario_nombre_reg'])) {
             echo $ins_usuario->agregar_usuario_controlador();
         }
+
+        /*---------- Eliminar un usuario ----------*/
+        if (isset($_POST['usuario_id_del'])) {
+            echo $ins_usuario->eliminar_usuario_controlador();
+        }
+        
+        
     } else {
         session_start(['name'=>'SPM']); //SPM = Sistema de Préstamos de Mobiliario
         session_unset();

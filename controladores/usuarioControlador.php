@@ -255,14 +255,14 @@
             $inicio = ($pagina > 0) ? (($pagina * $registros) - $registros) : 0 ;
 
             if (isset($busqueda) && $busqueda != "") {
-                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM usuario WHERE ((usuario_id !='$id'
-                    AND usuario_id !='1') AND (usuario_dni LIKE '%$busqueda%' OR usuario_nombre
+                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM usuario WHERE ((usuario_id != '$id'
+                    AND usuario_id != '1') AND (usuario_dni LIKE '%$busqueda%' OR usuario_nombre
                     LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_telefono
                     LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR usuario_usuario LIKE
                     '%$busqueda%')) ORDER BY usuario_apellido ASC LIMIT $inicio, $registros";
             } else {
                 $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM usuario WHERE usuario_id !='$id'
-                    AND usuario_id !='1' ORDER BY usuario_apellido ASC LIMIT $inicio, $registros";
+                    AND usuario_id != '1' ORDER BY usuario_apellido ASC LIMIT $inicio, $registros";
             }
 
             $conexion = mainModel::conectar();
@@ -344,6 +344,28 @@
                 }
 
                 return $tabla;
+
+        } /* Fin del controlador */
+
+        /*---------- Controlador eliminar usuario ----------*/
+        public function eliminar_usuario_controlador() {
+
+            /* recibiendo id del usuario */
+            $id = mainModel::decryption($_POST['usuario_id_del']);
+            $id = mainModel::limpiar_cadena($id);
+
+            /* comprobando el usuario principal */
+            if ($id == 1) { 
+                $alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"El usuario principal del sistema no puede ser eliminado.",
+					"Tipo"=>"error"
+				];
+				echo json_encode($alerta);
+				exit();
+            }
+
 
         } /* Fin del controlador */
     }
