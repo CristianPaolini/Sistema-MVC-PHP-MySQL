@@ -338,10 +338,8 @@
 
                 if ($total >= 1 && $pagina <= $Npaginas) {
                     $tabla.='<p class="text-right">Mostrando usuario(s) '.$reg_inicio.'
-                     al '.$reg_final.' de un total de '.$total.'</p>';
-                }
+                        al '.$reg_final.' de un total de '.$total.'</p>';
 
-                if ($total >= 1 && $pagina <= $Npaginas) {
                     $tabla.=mainModel::paginador_tablas($pagina, $Npaginas, $url, 7);
                 }
 
