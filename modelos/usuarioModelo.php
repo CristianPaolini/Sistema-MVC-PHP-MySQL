@@ -27,4 +27,14 @@
 
             return $sql;
         }
+
+        /*---------- Modelo eliminar usuario ----------*/
+        protected static function eliminar_usuario_modelo($id) {
+            $sql = main::conectar()->prepare("DELETE FROM usuario WHERE usuario_id =:ID");
+
+            $sql->bindParam(":ID", $id);
+            $sql->execute();
+
+            return $sql;
+        }
     }
