@@ -411,6 +411,25 @@
 				exit();
             }
 
+            $eliminar_usuario = usuarioModelo::eliminar_usuario_modelo($id);
+
+            if ($eliminar_usuario->rowCount() == 1) {
+                $alerta = [
+					"Alerta"=>"recargar",
+					"Titulo"=>"Usuario eliminado",
+					"Texto"=>"El usuario ha sido eliminado del sistema exitosamente.",
+					"Tipo"=>"success"
+				];
+            } else {
+                $alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"No se pudo eliminar el usuario. Por favor intente nuevamente.",
+					"Tipo"=>"error"
+				];
+            }
+            echo json_encode($alerta);
+
         } /* Fin del controlador */
     }
     
