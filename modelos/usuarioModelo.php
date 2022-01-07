@@ -46,7 +46,7 @@
                 $sql->bindParam(":ID", $id);
             } elseif ($tipo == "Conteo") {
                 $sql = mainModel::conectar()->prepare("SELECT usuario_id FROM usuario WHERE usuario_id !=
-                    '1'");
+                    '1'"); // No cuenta al admin
             }
 
             $sql->execute();
