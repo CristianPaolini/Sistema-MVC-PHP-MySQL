@@ -431,5 +431,15 @@
             echo json_encode($alerta);
 
         } /* Fin del controlador */
+
+        /*---------- Controlador datos usuario ----------*/
+        public function datos_usuario_controlador($tipo, $id) {
+            $tipo = mainModel::limpiar_cadena($tipo);
+
+            $id = mainModel::decryption($id);
+            $id = mainModel::limpiar_cadena($id);
+
+            return usuarioModelo::datos_usuario_modelo($tipo, $id);
+        } /* Fin del controlador */
     }
     
