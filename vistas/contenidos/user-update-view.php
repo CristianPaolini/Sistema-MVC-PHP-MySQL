@@ -1,3 +1,11 @@
+<?php
+	if ($lc->encryption($_SESSION['id_spm']) != $pagina[1]) {
+		if ($_SESSION['privilegio_spm'] != 1) {
+			echo $lc->forzar_cierre_sesion_controlador();
+			exit();
+		}
+	}
+?>
 <div class="full-box page-header">
 	<h3 class="text-left">
 		<i class="fas fa-sync-alt fa-fw"></i> &nbsp; ACTUALIZAR USUARIO
@@ -7,6 +15,7 @@
 	</p>
 </div>
 
+<?php if ($_SESSION['privilegio_spm'] == 1) { ?>
 <div class="container-fluid">
 	<ul class="full-box list-unstyled page-nav-tabs">
 		<li>
@@ -20,9 +29,18 @@
 		</li>
 	</ul>	
 </div>
+<?php } ?>
 
 <div class="container-fluid">
+	<?php
+		require_once "./controladores/usuarioControlador.php";
+		$ins_usuario = new usuarioControlador();
 
+		$datos_usuario = $ins_usuario->datos_usuario_controlador("Unico", $pagina[1]);
+
+		if ($datos_usuario->rowCount() == 1) {
+			$campos = $datos_usuario->fetch();
+	?>
 	<form action="" class="form-neon" autocomplete="off">
 		<fieldset>
 			<legend><i class="far fa-address-card"></i> &nbsp; Información personal</legend>
@@ -157,11 +175,11 @@
 			<button type="submit" class="btn btn-raised btn-success btn-sm"><i class="fas fa-sync-alt"></i> &nbsp; ACTUALIZAR</button>
 		</p>
 	</form>
-
+	<?php } else { ?>
 	<div class="alert alert-danger text-center" role="alert">
 		<p><i class="fas fa-exclamation-triangle fa-5x"></i></p>
 		<h4 class="alert-heading">¡Ocurrió un error inesperado!</h4>
 		<p class="mb-0">Lo sentimos, no podemos mostrar la información solicitada debido a un error.</p>
 	</div>
-	
+	<?php } ?>
 </div>
