@@ -441,5 +441,39 @@
 
             return usuarioModelo::datos_usuario_modelo($tipo, $id);
         } /* Fin del controlador */
+
+        /*---------- Controlador actualizar usuario ----------*/
+        public function actualizar_usuario_controlador() {
+
+            // Recibiendo el id
+            $id = mainModel::decryption($_POST['usuario_id_up']);
+            $id = mainModel::limpiar_cadena($id);
+
+            // Comprobar el usuario en la BD
+            $check_user = mainModel::ejecutar_consulta_simple("SELECT * FROM
+                usuario WHERE usuario_id = '$id'");
+            if ($check_user->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se ha encontrado el usuario en el sistema.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            } else {
+                $campos = $check_user->fetch();
+            }
+
+            $dni = mainModel::limpiar_cadena($_POST['usuario_dni_up']);
+            $nombre = mainModel::limpiar_cadena($_POST['usuario_nombre_up']);
+            $apellido = mainModel::limpiar_cadena($_POST['usuario_apellido_up']);
+            $telefono = mainModel::limpiar_cadena($_POST['usuario_telefono_up']);
+            $direccion = mainModel::limpiar_cadena($_POST['usuario_direccion_up']);
+            
+            $usuario = mainModel::limpiar_cadena($_POST['usuario_usuario_up']);
+            $email = mainModel::limpiar_cadena($_POST['usuario_email_up']);      
+
+        } /* Fin del controlador */
     }
     
