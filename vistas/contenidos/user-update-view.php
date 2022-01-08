@@ -96,24 +96,34 @@
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<label for="usuario_usuario" class="bmd-label-floating">Nombre de usuario</label>
-							<input type="text" pattern="[a-zA-Z0-9]{1,35}" class="form-control" name="usuario_usuario_up" id="usuario_usuario" maxlength="35">
+							<input type="text" pattern="[a-zA-Z0-9]{1,35}" class="form-control" name="usuario_usuario_up"
+							id="usuario_usuario" maxlength="35" value="<?php echo $campos['usuario_usuario']; ?>">
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<label for="usuario_email" class="bmd-label-floating">Email</label>
-							<input type="email" class="form-control" name="usuario_email_up" id="usuario_email" maxlength="70">
+							<input type="email" class="form-control" name="usuario_email_up"
+							id="usuario_email" maxlength="70" value="<?php echo $campos['usuario_email']; ?>">
 						</div>
 					</div>
+					<?php ?>
 					<div class="col-12">
 						<div class="form-group">
-							<span>Estado de la cuenta &nbsp; <span class="badge badge-info">Activa</span></span>
+							<span>Estado de la cuenta &nbsp; <?php if ($campos['usuario_estado'] == "Activa") { 
+								echo '<span class="badge badge-info">Activa</span>';
+							 } else {
+									echo '<span class="badge badge-danger">Deshabilitada</span>';
+								}?> </span>
 							<select class="form-control" name="usuario_estado_up">
-								<option value="Activa" selected="" >Activa</option>
-								<option value="Deshabilitada">Deshabilitada</option>
+								<option value="Activa" <?php if ($campos['usuario_estado'] == "Activa") { 
+									echo 'selected'; } ?>>Activa</option>
+								<option value="Deshabilitada" <?php if ($campos['usuario_estado'] == "Deshabilitada") { 
+									echo 'selected'; } ?>>Deshabilitada</option>
 							</select>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</fieldset>
