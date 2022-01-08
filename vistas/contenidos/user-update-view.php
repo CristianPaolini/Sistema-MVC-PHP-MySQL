@@ -107,7 +107,7 @@
 							id="usuario_email" maxlength="70" value="<?php echo $campos['usuario_email']; ?>">
 						</div>
 					</div>
-					<?php ?>
+					<?php if ($_SESSION['privilegio_spm'] == 1 && $campos['usuario_id'] != 1) { ?>
 					<div class="col-12">
 						<div class="form-group">
 							<span>Estado de la cuenta &nbsp; <?php if ($campos['usuario_estado'] == "Activa") { 
@@ -123,10 +123,11 @@
 							</select>
 						</div>
 					</div>
-
+					<?php } ?>
 				</div>
 			</div>
 		</fieldset>
+		<?php if ($_SESSION['privilegio_spm'] == 1 && $campos['usuario_id'] != 1) { ?>
 		<br><br><br>
 		<fieldset>
 			<legend style="margin-top: 40px;"><i class="fas fa-lock"></i> &nbsp; Nueva contraseña</legend>
@@ -148,6 +149,7 @@
 				</div>
 			</div>
 		</fieldset>
+		<?php } ?>
 		<br><br><br>
 		<fieldset>
 			<legend><i class="fas fa-medal"></i> &nbsp; Nivel de privilegio</legend>
@@ -159,10 +161,17 @@
 						<p><span class="badge badge-dark">Registrar</span> Solo permisos para registrar</p>
 						<div class="form-group">
 							<select class="form-control" name="usuario_privilegio_up">
-								<option value="" selected="" disabled="">Seleccione una opción</option>
-								<option value="1">Control total</option>
-								<option value="2">Edición</option>
-								<option value="3">Registrar</option>
+								<option value="1" <?php if ($campos['usuario_privilegio'] == 1) { 
+									echo 'selected'; } ?> >Control total <?php if ($campos['usuario_privilegio'] == 1) { 
+										echo '(Actual)'; } ?></option>
+
+								<option value="2" <?php if ($campos['usuario_privilegio'] == 2) {
+									 echo 'selected'; } ?> >Edición <?php if ($campos['usuario_privilegio'] == 2) { 
+										echo '(Actual)'; } ?></option>
+
+								<option value="3" <?php if ($campos['usuario_privilegio'] == 3) {
+									 echo 'selected'; } ?> >Registrar <?php if ($campos['usuario_privilegio'] == 3) { 
+										echo '(Actual)'; } ?></option>
 							</select>
 						</div>
 					</div>
