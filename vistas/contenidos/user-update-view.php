@@ -198,8 +198,14 @@
 				</div>
 			</div>
 		</fieldset>
+		<?php if ($lc->encryption($_SESSION['id_spm']) != $pagina[1]) { ?>
+			<input type="hidden" name="tipo_cuenta" value="Impropia">
+		<?php } else { ?>
+			<input type="hidden" name="tipo_cuenta" value="Propia">
+		<?php } ?>
 		<p class="text-center" style="margin-top: 40px;">
-			<button type="submit" class="btn btn-raised btn-success btn-sm"><i class="fas fa-sync-alt"></i> &nbsp; ACTUALIZAR</button>
+			<button type="submit" class="btn btn-raised btn-success btn-sm">
+				<i class="fas fa-sync-alt"></i> &nbsp; ACTUALIZAR</button>
 		</p>
 	</form>
 	<?php } else { ?>
