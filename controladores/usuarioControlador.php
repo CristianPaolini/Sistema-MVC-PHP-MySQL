@@ -29,7 +29,7 @@
                 $alerta = [
                     "Alerta"=>"simple",
                     "Titulo"=>"Ocurrió un error inesperado",
-                    "Texto"=>"No has completado todos los campos obligatorios.",
+                    "Texto"=>"No ha completado todos los campos obligatorios.",
                     "Tipo"=>"error"
                 ];
                 echo json_encode($alerta);
@@ -472,7 +472,39 @@
             $direccion = mainModel::limpiar_cadena($_POST['usuario_direccion_up']);
             
             $usuario = mainModel::limpiar_cadena($_POST['usuario_usuario_up']);
-            $email = mainModel::limpiar_cadena($_POST['usuario_email_up']);      
+            $email = mainModel::limpiar_cadena($_POST['usuario_email_up']);
+            
+            if (isset($_POST['usuario_estado_up'])) {
+                $estado = mainModel::limpiar_cadena($_POST['usuario_estado_up']);
+            } else {
+                $estado = $campos['usuario_estado'];
+            }
+            
+            if (isset($_POST['usuario_privilegio_up'])) {
+                $privilegio = mainModel::limpiar_cadena($_POST['usuario_privilegio_up']);
+            } else {
+                $privilegio = $campos['usuario_privilegio'];
+            }
+
+            $admin_usuario = mainModel::limpiar_cadena($_POST['usuario_admin']);
+
+            $admin_clave = mainModel::limpiar_cadena($_POST['clave_admin']);
+            $admin_clave = mainModel::encryption($admin_clave);
+
+            $tipo_cuenta = mainModel::limpiar_cadena($_POST['tipo_cuenta']);
+
+            /*== Comprobar campos vacíos ==*/
+            if ($dni == "" || $nombre == "" || $apellido == "" || $usuario == "" ||
+                $admin_usuario == "" || $admin_clave == "") {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No ha completado todos los campos obligatorios.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
 
         } /* Fin del controlador */
     }
