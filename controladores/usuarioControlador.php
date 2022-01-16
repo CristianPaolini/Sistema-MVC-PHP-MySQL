@@ -679,7 +679,37 @@
                     echo json_encode($alerta);
                     exit();
                 }
+            }
+
+            /*== Comprobar claves ==*/
+            if ($_POST['usuario_clave_nueva_1'] != "" && $_POST['usuario_clave_nueva_2'] != "") {
+                if ($_POST['usuario_clave_nueva_1'] != $_POST['usuario_clave_nueva_2']) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"Las nuevas claves ingresadas no coinciden.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                } else {
+                    if (mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}",
+                        $_POST['usuario_clave_nueva_1']) || mainModel::verificar_datos("[a-zA-Z0-9$@.-]{7,100}",
+                        $_POST['usuario_clave_nueva_2'])) {
+                            $alerta = [
+                                "Alerta"=>"simple",
+                                "Titulo"=>"Ocurrió un error inesperado",
+                                "Texto"=>"Las nuevas claves ingresadas no coinciden con el formato solicitado.",
+                                "Tipo"=>"error"
+                            ];
+                            echo json_encode($alerta);
+                            exit();
+                    }
+                    $clave = mainModel::encryption($_POST['usuario_clave_nueva_1']); // Desde el form viene como texto plano, por eso se encripta
+                }
                 
+            } else {
+                $clave = $campos['usuario_clave']
             }
 
         } /* Fin del controlador */
