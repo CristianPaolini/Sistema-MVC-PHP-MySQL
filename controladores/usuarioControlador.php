@@ -654,6 +654,34 @@
                 }
             }
 
+            /*== Comprobar email ==*/
+            if ($email != $campos['usuario_email'] && $email != "") {
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $check_email = mainModel::ejecutar_consulta_simple("SELECT usuario_email FROM usuario WHERE
+                        usuario_email = '$email'");
+                if ($check_email->rowCount() > 0) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"El nuevo EMAIL ingresado ya se encuentra registrado en el sistema.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+                } else {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"Ha ingresado un correo no válido.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+                
+            }
+
         } /* Fin del controlador */
     }
     
