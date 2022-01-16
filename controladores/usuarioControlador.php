@@ -622,6 +622,38 @@
                 exit();
             }
 
+            /*== Comprobar DNI ==*/
+            if ($dni != $campos['usuario_dni']) {
+                $check_dni = mainModel::ejecutar_consulta_simple("SELECT usuario_dni FROM usuario
+                    WHERE usuario_dni = '$dni'");
+                if ($check_dni->rowCount() > 0) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"El DNI ingresado ya se encuentra registrado en el sistema.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
+
+            /*== Comprobar usuario ==*/
+            if ($usuario != $campos['usuario_usuario']) {
+                $check_user = mainModel::ejecutar_consulta_simple("SELECT usuario_usuario FROM usuario
+                    WHERE usuario_usuario = '$usuario'");
+                if ($check_user->rowCount() > 0) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"El NOMBRE DE USUARIO ingresado ya se encuentra registrado en el sistema.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
+
         } /* Fin del controlador */
     }
     
