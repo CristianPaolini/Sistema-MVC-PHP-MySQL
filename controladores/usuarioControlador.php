@@ -711,7 +711,28 @@
             } else {
                 $clave = $campos['usuario_clave']
             }
-
+            
+            /*== Comprobar credenciales para actualizar datos ==*/
+            if ($tipo_cuenta == "Propia") {
+                $check_cuenta = mainModel::ejecutar_consulta_simple("SELECT usuario_id FROM usuario WHERE
+                    usuario_usuario = '$admin_usuario' AND usuario_clave = '$admin_clave' AND usuario_id
+                        = '$id'");
+            } else {
+                session_start(['name'=>'SPM']);
+                if ($_SESSION['privilegio_spm'] != 1) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"No tiene los permisos necesarios para realizar esta operación.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+                $check_cuenta = mainModel::ejecutar_consulta_simple("SELECT usuario_id FROM usuario WHERE
+                    usuario_usuario = '$admin_usuario' AND usuario_clave = '$admin_clave'");
+            }
+            
         } /* Fin del controlador */
     }
     
