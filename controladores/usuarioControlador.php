@@ -622,8 +622,8 @@
                 exit();
             }
 
-            /*== Comprobar DNI ==*/
-            if ($dni != $campos['usuario_dni']) {
+            /*== Comprobar DNI ==*/ // Si el valor que viene en el formulario es distinto al valor que tenemos en BD, quiere decir que se está modificando DNI, 
+            if ($dni != $campos['usuario_dni']) {  // luego verifico que el nuevo DNI no esté registrado en BD. Lo mismo con USUARIO debajo                                              
                 $check_dni = mainModel::ejecutar_consulta_simple("SELECT usuario_dni FROM usuario
                     WHERE usuario_dni = '$dni'");
                 if ($check_dni->rowCount() > 0) {
