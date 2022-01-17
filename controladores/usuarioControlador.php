@@ -743,7 +743,38 @@
                 echo json_encode($alerta);
                 exit();
             }
-            
+
+            /*== Preparando datos para enviarlos al modelo ==*/
+            $datos_usuario_up = [
+                "DNI"=>$dni,
+                "Nombre"=>$nombre,
+                "Apellido"=>$apellido,
+                "Telefono"=>$telefono,
+                "Direccion"=>$direccion,
+                "Email"=>$email,
+                "Usuario"=>$usuario,
+                "Clave"=>$clave,
+                "Estado"=>$estado,
+                "Privilegio"=>$privilegio,
+                "ID"=>$id
+            ];
+
+            if (usuarioModelo::actualizar_usuario_modelo($datos_usuario_up)) {
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Datos actualizados",
+                    "Texto"=>"Los datos han sido actualizados con éxito.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo actualizar los datos. Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
         } /* Fin del controlador */
     }
     
