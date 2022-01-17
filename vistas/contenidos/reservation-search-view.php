@@ -34,13 +34,13 @@
 				<div class="col-12 col-md-4">
 					<div class="form-group">
 						<label for="busqueda_inicio_prestamo" >Fecha inicial (día/mes/año)</label>
-						<input type="date" class="form-control" name="busqueda_inicio_prestamo" id="busqueda_inicio_prestamo" maxlength="30">
+						<input type="date" class="form-control" name="fecha_inicio" id="busqueda_inicio_prestamo" maxlength="30">
 					</div>
 				</div>
 				<div class="col-12 col-md-4">
 					<div class="form-group">
 						<label for="busqueda_final_prestamo" >Fecha final (día/mes/año)</label>
-						<input type="date" class="form-control" name="busqueda_final_prestamo" id="busqueda_final_prestamo" maxlength="30">
+						<input type="date" class="form-control" name="fecha_final" id="busqueda_final_prestamo" maxlength="30">
 					</div>
 				</div>
 				<div class="col-12">
