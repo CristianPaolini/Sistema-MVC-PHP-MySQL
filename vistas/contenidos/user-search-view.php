@@ -29,6 +29,7 @@
 
 <div class="container-fluid">
 	<form class="form-neon" action="">
+		<input type="hidden" name="modulo" value="usuario">
 		<div class="container-fluid">
 			<div class="row justify-content-md-center">
 				<div class="col-12 col-md-6">
@@ -51,6 +52,7 @@
 
 <div class="container-fluid">
 	<form action="">
+		<input type="hidden" name="modulo" value="usuario">
 		<input type="hidden" name="eliminar_busqueda" value="eliminar">
 		<div class="container-fluid">
 			<div class="row justify-content-md-center">
