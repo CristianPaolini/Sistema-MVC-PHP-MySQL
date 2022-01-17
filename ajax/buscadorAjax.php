@@ -91,7 +91,7 @@
 
             $alerta = [
                 "Alerta"=>"redireccionar",
-                "URL"=>SERVERURL.$url."/";
+                "URL"=>SERVERURL.$url."/"
             ];
 
             echo json_encode($alerta);
