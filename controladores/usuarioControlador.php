@@ -709,7 +709,7 @@
                 }
                 
             } else {
-                $clave = $campos['usuario_clave']
+                $clave = $campos['usuario_clave'];
             }
             
             /*== Comprobar credenciales para actualizar datos ==*/
@@ -731,6 +731,17 @@
                 }
                 $check_cuenta = mainModel::ejecutar_consulta_simple("SELECT usuario_id FROM usuario WHERE
                     usuario_usuario = '$admin_usuario' AND usuario_clave = '$admin_clave'");
+            }
+
+            if ($check_cuenta->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"NOMBRE y/o CLAVE de administrador no válidos.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
             }
             
         } /* Fin del controlador */
