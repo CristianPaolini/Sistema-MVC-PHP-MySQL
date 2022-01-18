@@ -85,5 +85,45 @@
                 exit();
             }
 
+            /*== Comprobar que el DNI no esté reg. en BD ==*/
+            $check_dni = mainModel::ejecutar_consulta_simple("SELECT cliente_dni FROM cliente
+                WHERE cliente_dni = '$dni'");
+            if ($check_dni->rowCount() > 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El DNI ingresado ya se encuentra registrado en el sistema.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            $datos_cliente_reg = [
+                "DNI"=>$dni,
+                "Nombre"=>$nombre,
+                "Apellido"=>$apellido,
+                "Telefono"=>$telefono,
+                "Direccion"=>$direccion
+            ];
+
+            $agregar_cliente = clienteModelo::agregar_cliente_modelo($datos_cliente_reg);
+
+            if ($agregar_cliente->rowCount() == 1) {
+                $alerta = [
+                    "Alerta"=>"limpiar",
+                    "Titulo"=>"Cliente registrado",
+                    "Texto"=>"Los datos del cliente se registraron con éxito.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo registrar el cliente. Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
         } /* Fin controlador */
     }
