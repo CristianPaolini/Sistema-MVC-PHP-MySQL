@@ -8,4 +8,8 @@
 
     class clienteControlador extends clienteModelo {
         
+        /*---------- Controlador agregar cliente ----------*/
+        public function agregar_cliente_controlador() {
+    
+        } /* Fin controlador */
     }
