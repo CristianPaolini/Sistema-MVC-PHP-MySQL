@@ -259,6 +259,8 @@
                     AND usuario_id != '1') AND (usuario_dni LIKE '%$busqueda%' OR usuario_nombre
                     LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_telefono
                     LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR usuario_usuario LIKE
+                    '%$busqueda%' OR CONCAT_WS(' ', usuario_nombre, usuario_apellido) LIKE
+                    '%$busqueda%' OR CONCAT_WS(' ', usuario_apellido, usuario_nombre) LIKE
                     '%$busqueda%')) ORDER BY usuario_apellido ASC LIMIT $inicio, $registros";
             } else {
                 $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM usuario WHERE usuario_id !='$id'
