@@ -147,7 +147,9 @@
             if (isset($busqueda) && $busqueda != "") {
                 $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM cliente WHERE cliente_dni LIKE
                 '%$busqueda%' OR cliente_nombre LIKE '%$busqueda%' OR cliente_apellido LIKE
-                '%$busqueda%' OR cliente_telefono LIKE '%$busqueda%'
+                '%$busqueda%' OR cliente_telefono LIKE '%$busqueda%' OR
+                CONCAT_WS(' ', cliente_nombre, cliente_apellido) LIKE '%$busqueda%' OR
+                CONCAT_WS(' ', cliente_apellido, cliente_nombre) LIKE '%$busqueda%'
                 ORDER BY cliente_apellido ASC LIMIT $inicio, $registros";
             } else {
                 $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM cliente ORDER BY cliente_apellido 
