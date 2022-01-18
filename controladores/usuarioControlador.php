@@ -238,7 +238,7 @@
 
         /*---------- Controlador paginar usuario ----------*/
         public function paginador_usuario_controlador($pagina, $registros, $privilegio,
-         $id, $url, $busqueda) {
+            $id, $url, $busqueda) {
 
             $pagina = mainModel::limpiar_cadena($pagina);
             $registros = mainModel::limpiar_cadena($registros);
