@@ -191,28 +191,36 @@
                         $tabla.='
                         <tr class="text-center" >
                             <td>'.$contador.'</td>
-                            <td>'.$rows['usuario_dni'].'</td>
-                            <td>'.$rows['usuario_nombre'].' '.$rows['usuario_apellido'].'</td>
-                            <td>'.$rows['usuario_telefono'].'</td>
-                            <td>'.$rows['usuario_usuario'].'</td>
-                            <td>'.$rows['usuario_email'].'</td>
-                            <td>
-                                <a href="'.SERVERURL.'user-update/'.mainModel::encryption($rows['usuario_id']).'/" 
-                                class="btn btn-success">
-                                        <i class="fas fa-sync-alt"></i>	
-                                </a>
-                            </td>
-                            <td>
-                                <form class="FormularioAjax" action="'.SERVERURL.'ajax/usuarioAjax.php"
-                                    method="POST" data-form="delete"
-                                    autocomplete="off">
-                                    <input type="hidden" name="usuario_id_del" value="'.mainModel::encryption($rows['usuario_id']).'">
-                                    <button type="submit" class="btn btn-warning">
-                                            <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>';
+                            <td>'.$rows['cliente_dni'].'</td>
+                            <td>'.$rows['cliente_nombre'].'</td>
+                            <td>'.$rows['cliente_apellido'].'</td>
+                            <td>'.$rows['cliente_telefono'].'</td>
+                            <td><button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover"
+                            title="'.$rows['cliente_nombre'].' '.$rows['cliente_apellido'].'"
+                            data-content="'.$rows['cliente_direccion'].'">
+                            <i class="fas fa-info-circle"></i>
+                                </button></td>';
+                            if ($privilegio == 1 || $privilegio == 2) {
+                        $tabla.='<td>
+                                    <a href="'.SERVERURL.'client-update/'.mainModel::encryption($rows['cliente_id']).'/" 
+                                    class="btn btn-success">
+                                            <i class="fas fa-sync-alt"></i>	
+                                    </a>
+                                </td>';
+                            }
+                            if ($privilegio == 1) {
+                        $tabla.='<td>
+                                    <form class="FormularioAjax" action="'.SERVERURL.'ajax/clienteAjax.php"
+                                        method="POST" data-form="delete"
+                                        autocomplete="off">
+                                        <input type="hidden" name="cliente_id_del" value="'.mainModel::encryption($rows['cliente_id']).'">
+                                        <button type="submit" class="btn btn-warning">
+                                                <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>';
+                            }
+               $tabla.='</tr>';
                         $contador++;
                     }
                     $reg_final = $contador - 1;
@@ -230,7 +238,7 @@
                 $tabla.='</tbody></table></div>';
 
                 if ($total >= 1 && $pagina <= $Npaginas) {
-                    $tabla.='<p class="text-right">Mostrando usuario(s) '.$reg_inicio.'
+                    $tabla.='<p class="text-right">Mostrando cliente(s) '.$reg_inicio.'
                         al '.$reg_final.' de un total de '.$total.'</p>';
 
                     $tabla.=mainModel::paginador_tablas($pagina, $Npaginas, $url, 7);
