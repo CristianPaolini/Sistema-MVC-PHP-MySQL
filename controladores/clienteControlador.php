@@ -249,4 +249,42 @@
                 return $tabla;
 
         } /* Fin del controlador */
+
+        /*---------- Controlador eliminar clientes ----------*/
+        public function eliminar_cliente_controlador() {
+
+            // Recuperar id del cliente
+            $id = mainModel::decryption($_POST['cliente_id_del']);
+            $id = mainModel::limpiar_cadena($id);
+
+            // Comprobar el cliente en la BD
+            $check_cliente = mainModel::ejecutar_consulta_simple("SELECT cliente_id FROM cliente
+                WHERE cliente_id = '$id'");
+            if ($check_cliente->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se ha encontrado el cliente que desea eliminar.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            // Comprobar préstamos
+            $check_prestamos = mainModel::ejecutar_consulta_simple("SELECT cliente_id FROM
+                prestamo WHERE cliente_id = '$id' LIMIT 1");
+            if ($check_prestamos->rowCount() > 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo eliminar el cliente, ya que posee préstamos asociados.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            } 
+
+            
+        } /* Fin del controlador */
     }

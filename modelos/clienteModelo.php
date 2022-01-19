@@ -19,4 +19,14 @@
 
             return $sql;
         }
+
+        /*---------- Modelo eliminar cliente ----------*/
+        protected static function eliminar_cliente_modelo($id) {
+            $sql = mainModel::conectar()->prepare("DELETE FROM cliente WHERE cliente_id = :ID");
+
+            $sql->bindParam(":ID", $id);
+            $sql->execute();
+
+            return $sql;
+        }
     }
