@@ -63,7 +63,7 @@
                     unset($_SESSION[$fecha_final]);
                 }
             } else {
-                $name_var = "busqueda_".$modulo;
+                $name_var = "busqueda_".$modulo; // busqueda_usuario, busqueda_cliente, busqueda_item, etc.
 
                 // iniciar búsqueda
                 if (isset($_POST['busqueda_inicial'])) {

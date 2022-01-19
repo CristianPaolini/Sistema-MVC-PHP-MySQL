@@ -76,7 +76,6 @@
 	</form>
 </div>
 
-
 <div class="container-fluid">
 <?php 
 	require_once "./controladores/usuarioControlador.php";
