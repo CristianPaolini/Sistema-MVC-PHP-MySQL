@@ -177,10 +177,10 @@
                         <th>TELÉFONO</th>
                         <th>DIRECCIÓN</th>';
                         if ($privilegio == 1 || $privilegio == 2) {
-                            $tabla.='<th>ACTUALIZAR</th>'
+                            $tabla.='<th>ACTUALIZAR</th>';
                         }
                         if ($privilegio == 1) {
-                            $tabla.='<th>ELIMINAR</th>'
+                            $tabla.='<th>ELIMINAR</th>';
                         }
             $tabla.='</tr>
                 </thead>
