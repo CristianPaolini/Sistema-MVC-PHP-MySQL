@@ -285,6 +285,36 @@
                 exit();
             } 
 
+            // Comprobar los privilegios
+            session_start(['name'=>'SPM']);
+            if ($_SESSION['privilegio_spm'] != 1) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No tiene los permisos necesarios para realizar esta operación.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
             
+            $eliminar_cliente = clienteModelo::eliminar_cliente_modelo($id);
+
+            if ($eliminar_cliente->rowCount() == 1) {
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Cliente eliminado",
+                    "Texto"=>"El cliente ha sido eliminado del sistema exitosamente.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo eliminar el cliente. Por favor intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
         } /* Fin del controlador */
     }
