@@ -328,4 +328,9 @@
             return clienteModelo::datos_cliente_modelo($tipo, $id);
         } /* Fin del controlador */
 
+        /*---------- Controlador actualizar cliente ----------*/
+        public function actualizar_cliente_controlador() {
+            
+        } /* Fin del controlador */
+
     }
