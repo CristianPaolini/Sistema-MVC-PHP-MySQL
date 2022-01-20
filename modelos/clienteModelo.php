@@ -29,4 +29,18 @@
 
             return $sql;
         }
+
+        /*---------- Modelo datos cliente ----------*/
+        protected static function datos_cliente_modelo($tipo, $id) {
+            if ($tipo == "Unico") {
+                $sql = mainModel::conectar()->prepare("SELECT * FROM cliente WHERE cliente_id =
+                    :ID");
+                $sql->bindParam(":ID", $id);
+            } elseif ($tipo == "Conteo") {
+                $sql = mainModel::conectar()->prepare("SELECT cliente_id FROM cliente");
+            } 
+            $sql->execute();
+
+            return $sql;
+        }
     }
