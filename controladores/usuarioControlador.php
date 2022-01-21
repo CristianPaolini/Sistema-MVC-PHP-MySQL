@@ -765,14 +765,14 @@
                 $alerta = [
                     "Alerta"=>"recargar",
                     "Titulo"=>"Datos actualizados",
-                    "Texto"=>"Los datos han sido actualizados con éxito.",
+                    "Texto"=>"Los datos del usuario han sido actualizados con éxito.",
                     "Tipo"=>"success"
                 ];
             } else {
                 $alerta = [
                     "Alerta"=>"simple",
                     "Titulo"=>"Ocurrió un error inesperado",
-                    "Texto"=>"No se pudo actualizar los datos. Por favor, intente nuevamente.",
+                    "Texto"=>"No se pudo actualizar los datos del usuario. Por favor, intente nuevamente.",
                     "Tipo"=>"error"
                 ];
             }
