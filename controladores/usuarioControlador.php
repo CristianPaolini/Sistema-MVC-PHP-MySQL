@@ -180,7 +180,7 @@
 				$alerta = [
 					"Alerta"=>"simple",
 					"Titulo"=>"Ocurrió un error inesperado",
-					"Texto"=>"Las claves que acaba de ingresar no coinciden.",
+					"Texto"=>"Las CLAVES que acaba de ingresar no coinciden.",
 					"Tipo"=>"error"
 				];
 				echo json_encode($alerta);
@@ -194,7 +194,7 @@
                 $alerta = [
 					"Alerta"=>"simple",
 					"Titulo"=>"Ocurrió un error inesperado",
-					"Texto"=>"No ha seleccionado un privilegio.",
+					"Texto"=>"No ha seleccionado un PRIVILEGIO.",
 					"Tipo"=>"error"
 				];
 				echo json_encode($alerta);
@@ -227,7 +227,7 @@
                 $alerta = [
 					"Alerta"=>"simple",
 					"Titulo"=>"Ocurrió un error inesperado",
-					"Texto"=>"No se pudo registrar el usuario.",
+					"Texto"=>"No se pudo registrar el usuario. Por favor, intente nuevamente.",
 					"Tipo"=>"error"
 				];
             }

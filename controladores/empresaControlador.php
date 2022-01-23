@@ -44,7 +44,7 @@
                 echo json_encode($alerta);
                 exit();
             }
-            
+
             if (mainModel::verificar_datos("[0-9()+]{8,20}", $telefono)) {
                 $alerta = [
                     "Alerta"=>"simple",
@@ -77,5 +77,43 @@
                 echo json_encode($alerta);
                 exit();
             }
+
+            /*== Comprobar empresas registradas ==*/
+            $check_empresas = mainModel::ejecutar_consulta_simple("SELECT empresa_id FROM empresa");
+            if ($check_empresas->rowCount() >= 1) {
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"Ya existe una empresa registrada, no es posible registrar más.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            $datos_empresa_reg = [
+                "Nombre"=>$nombre,
+                "Email"=>$email,
+                "Telefono"=>$telefono,
+                "Direccion"=>$direccion,
+            ];
+
+            $agregar_empresa = empresaModelo::agregar_empresa_modelo($datos_empresa_reg);
+            if ($agregar_empresa->rowCount() == 1) {
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Empresa registrada",
+                    "Texto"=>"Los datos de la empresa han sido registrados exitosamente.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo registrar la empresa. Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
         } /* Fin controlador */
     }
