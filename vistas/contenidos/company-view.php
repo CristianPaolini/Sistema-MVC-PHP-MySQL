@@ -6,7 +6,14 @@
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero nam eaque nostrum, voluptates, rerum quo. Consequuntur ut, maxime? Quibusdam ipsum maxime non veritatis dignissimos qui reiciendis, amet eum nihil! Et!
     </p>
 </div>
+<?php
+    require_once "./controladores/empresaControlador.php";
+    $ins_empresa = new empresaControlador();
 
+    $datos_empresa = $ins_empresa->datos_empresa_controlador();
+
+    if ($datos_empresa->rowCount() == 0) {
+?>
 <div class="container-fluid">
     <form action="" class="form-neon" autocomplete="off">
         <fieldset>
@@ -49,7 +56,9 @@
         </p>
     </form>
 </div>
-
+<?php } elseif ($datos_empresa->rowCount() == 1 && ($_SESSION['privilegio_spm'] == 1 || $_SESSION['privilegio_spm'] == 2)) {
+    
+?>
 
 <div class="container-fluid">
     <form action="" class="form-neon" autocomplete="off">
@@ -91,9 +100,10 @@
         </p>
     </form>
 </div>
-
+<?php } else { ?>
 <div class="alert alert-danger text-center" role="alert">
     <p><i class="fas fa-exclamation-triangle fa-5x"></i></p>
     <h4 class="alert-heading">¡Ocurrió un error inesperado!</h4>
     <p class="mb-0">Lo sentimos, no podemos mostrar la información solicitada debido a un error.</p>
 </div>
+<?php } ?>

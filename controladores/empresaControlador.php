@@ -7,5 +7,9 @@
     }
 
     class empresaControlador extends empresaModelo {
-        
+
+        /*---------- Controlador datos empresa ----------*/
+        public function datos_empresa_controlador() {
+            return empresaModelo::datos_empresa_modelo();
+        } /* Fin controlador */
     }
