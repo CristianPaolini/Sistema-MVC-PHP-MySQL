@@ -12,4 +12,9 @@
         public function datos_empresa_controlador() {
             return empresaModelo::datos_empresa_modelo();
         } /* Fin controlador */
+
+        /*---------- Controlador agregar empresa ----------*/
+        public function agregar_empresa_controlador() {
+
+        } /* Fin controlador */
     }

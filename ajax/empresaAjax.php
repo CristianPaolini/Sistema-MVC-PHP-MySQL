@@ -2,11 +2,16 @@
     $peticionAjax = true;
     require_once "../config/APP.php";
 
-    if () { 
+    if (isset($_POST['empresa_nombre_reg'])) { 
 
         /*---------- Instancia al controlador ----------*/
         require_once "../controladores/empresaControlador.php";
         $ins_empresa = new empresaControlador();
+
+        /*---------- Agregar empresa ----------*/
+        if (isset($_POST['empresa_nombre_reg'])) {
+            echo $ins_empresa->agregar_empresa_controlador();
+        }
 
     } else {
         session_start(['name'=>'SPM']);
