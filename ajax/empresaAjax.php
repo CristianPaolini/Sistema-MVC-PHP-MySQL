@@ -2,7 +2,7 @@
     $peticionAjax = true;
     require_once "../config/APP.php";
 
-    if (isset($_POST['empresa_nombre_reg'])) { 
+    if (isset($_POST['empresa_nombre_reg']) || isset($_POST['empresa_id_up'])) { 
 
         /*---------- Instancia al controlador ----------*/
         require_once "../controladores/empresaControlador.php";
@@ -11,6 +11,11 @@
         /*---------- Agregar empresa ----------*/
         if (isset($_POST['empresa_nombre_reg'])) {
             echo $ins_empresa->agregar_empresa_controlador();
+        }
+
+        /*---------- Actualizar empresa ----------*/
+        if (isset($_POST['empresa_id_up'])) {
+            echo $ins_empresa->actualizar_empresa_controlador();
         }
 
     } else {

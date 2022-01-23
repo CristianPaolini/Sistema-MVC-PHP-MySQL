@@ -25,4 +25,19 @@
 
             return $sql;
         }
+
+        /*---------- Modelo actualizar empresa ----------*/
+        protected static function actualizar_empresa_modelo($datos) {
+            $sql = mainModel::conectar()->prepare("UPDATE empresa SET empresa_nombre = :Nombre, empresa_email = :Email,
+                empresa_telefono = :Telefono, empresa_direccion	= :Direccion WHERE empresa_id = :ID");
+            
+            $sql->bindParam(':Nombre', $datos['Nombre']);
+            $sql->bindParam(':Email', $datos['Email']);
+            $sql->bindParam(':Telefono', $datos['Telefono']);
+            $sql->bindParam(':Direccion', $datos['Direccion']);
+            $sql->bindParam(':ID', $datos['ID']);
+            $sql->execute();
+
+            return $sql;
+        }
     }

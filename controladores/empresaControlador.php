@@ -116,4 +116,9 @@
             }
             echo json_encode($alerta);
         } /* Fin controlador */
+
+        /*---------- Controlador actualizar empresa ----------*/
+        public function actualizar_empresa_controlador() {
+
+        } /* Fin controlador */
     }
