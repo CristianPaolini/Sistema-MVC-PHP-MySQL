@@ -24,26 +24,26 @@
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label for="empresa_nombre" class="bmd-label-floating">Nombre de la empresa</label>
-                            <input type="text" pattern="[a-zA-z0-9áéíóúÁÉÍÓÚñÑ. ]{1,70}" class="form-control" name="empresa_nombre_reg" id="empresa_nombre" maxlength="70">
+                            <input type="text" pattern="[a-zA-z0-9áéíóúÁÉÍÓÚñÑ. ]{1,70}" class="form-control" name="empresa_nombre_reg" id="empresa_nombre" maxlength="70" required>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label for="empresa_email" class="bmd-label-floating">Correo</label>
-                            <input type="email" class="form-control" name="empresa_email_reg" id="empresa_email" maxlength="70">
+                            <input type="email" class="form-control" name="empresa_email_reg" id="empresa_email" maxlength="70" required>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label for="empresa_telefono" class="bmd-label-floating">Telefono</label>
-                            <input type="text" pattern="[0-9()+]{8,20}" class="form-control" name="empresa_telefono_reg" id="empresa_telefono" maxlength="20">
+                            <input type="text" pattern="[0-9()+]{8,20}" class="form-control" name="empresa_telefono_reg" id="empresa_telefono" maxlength="20" required>
                         </div>
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label for="empresa_direccion" class="bmd-label-floating">Dirección</label>
-                            <input type="text" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{1,190}" class="form-control" name="empresa_direccion_reg" id="empresa_direccion" maxlength="190">
+                            <input type="text" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{1,190}" class="form-control" name="empresa_direccion_reg" id="empresa_direccion" maxlength="190" required>
                         </div>
                     </div>
                 </div>
