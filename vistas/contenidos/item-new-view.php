@@ -50,7 +50,7 @@
 						<div class="form-group">
 							<label for="item_estado" class="bmd-label-floating">Estado</label>
 							<select class="form-control" name="item_estado_reg" id="item_estado">
-								<option value="" selected="" disabled="">Seleccione una opción</option>
+								<option value="" selected="" >Seleccione una opción</option>
 								<option value="Habilitado">Habilitado</option>
 								<option value="Deshabilitado">Deshabilitado</option>
 							</select>
