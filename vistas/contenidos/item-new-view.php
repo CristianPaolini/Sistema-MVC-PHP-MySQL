@@ -21,7 +21,8 @@
 </div>
 
 <div class="container-fluid">
-	<form action="" class="form-neon" autocomplete="off">
+	<form class="form-neon FormularioAjax action="<?php echo SERVERURL; ?>ajax/itemAjax.php" method="POST" data-form="save"
+	 autocomplete="off"">
 		<fieldset>
 			<legend><i class="far fa-plus-square"></i> &nbsp; Información del item</legend>
 			<div class="container-fluid">

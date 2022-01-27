@@ -2,7 +2,7 @@
 -- Insert de usuario administrador en tabla `usuario`
 --
 INSERT INTO `usuario` VALUES ('1', '0000000000', 'Cristian', 'Paolini',
-    '0000000000', 'Dirección 3550', 'administrador@gmail.com', 'administrador', 'WVBHWHJ1WTIvVktma0NqaUpEVzNSQT09',
+    '0000000000', 'Dirección 3550', 'administrador@gmail.com', 'Administrador', 'WVBHWHJ1WTIvVktma0NqaUpEVzNSQT09',
     'activa', '1');
 
 
