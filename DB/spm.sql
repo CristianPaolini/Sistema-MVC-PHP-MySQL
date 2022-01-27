@@ -264,3 +264,10 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Insert de usuario administrador en tabla `usuario`
+--
+INSERT INTO `usuario` VALUES ('0000000000', 'Cristian', 'Paolini',
+    '0000000000', 'Dirección 3550', 'administrador@gmail.com', 'administrador', 'WVBHWHJ1WTIvVktma0NqaUpEVzNSQT09',
+    'activa', '1');
