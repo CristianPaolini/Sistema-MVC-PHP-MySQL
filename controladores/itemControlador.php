@@ -86,5 +86,59 @@
                 echo json_encode($alerta);
                 exit();
             }
+
+            /*== Comprobar código ==*/
+            $check_codigo = mainModel::ejecutar_consulta_simple("SELECT item_codigo FROM item WHERE
+                item_codigo = '$codigo'");
+            if ($check_codigo->rowCount() >= 1) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El CÓDIGO de item ingresado ya se encuentra registrado en el sistema.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            $check_nombre = mainModel::ejecutar_consulta_simple("SELECT item_nombre FROM item WHERE
+                item_nombre = '$nombre'");
+            if ($check_nombre->rowCount() >= 1) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El NOMBRE de item ingresado ya se encuentra registrado en el sistema.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            $datos_item_reg = [
+                "Codigo"=>$codigo,
+                "Nombre"=>$nombre,
+                "Stock"=>$stock,
+                "Estado"=>$estado,
+                "Detalle"=>$detalle
+            ];
+
+            $agregar_item = itemModelo::agregar_item_modelo($datos_item_reg);
+
+            if ($agregar_item->rowCount() == 1) {
+                $alerta = [
+                    "Alerta"=>"limpiar",
+                    "Titulo"=>"Item registrado",
+                    "Texto"=>"Los datos del item han sido registrados exitosamente.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo registrar el item. Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
         } /* Fin controlador */
     }
