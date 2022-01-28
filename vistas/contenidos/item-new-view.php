@@ -21,8 +21,8 @@
 </div>
 
 <div class="container-fluid">
-	<form class="form-neon FormularioAjax action="<?php echo SERVERURL; ?>ajax/itemAjax.php" method="POST" data-form="save"
-	 autocomplete="off"">
+	<form class="form-neon FormularioAjax" action="<?php echo SERVERURL; ?>ajax/itemAjax.php" method="POST" data-form="save"
+	 autocomplete="off">
 		<fieldset>
 			<legend><i class="far fa-plus-square"></i> &nbsp; Información del item</legend>
 			<div class="container-fluid">
@@ -30,27 +30,27 @@
 					<div class="col-12 col-md-4">
 						<div class="form-group">
 							<label for="item_codigo" class="bmd-label-floating">Código</label>
-							<input type="text" pattern="[a-zA-Z0-9-]{1,45}" class="form-control" name="item_codigo_reg" id="item_codigo" maxlength="45">
+							<input type="text" pattern="[a-zA-Z0-9-]{1,45}" class="form-control" name="item_codigo_reg" id="item_codigo" maxlength="45" required>
 						</div>
 					</div>
 					
 					<div class="col-12 col-md-4">
 						<div class="form-group">
 							<label for="item_nombre" class="bmd-label-floating">Nombre</label>
-							<input type="text" pattern="[a-zA-záéíóúÁÉÍÓÚñÑ0-9 ]{1,140}" class="form-control" name="item_nombre_reg" id="item_nombre" maxlength="140">
+							<input type="text" pattern="[a-zA-záéíóúÁÉÍÓÚñÑ0-9 ]{1,140}" class="form-control" name="item_nombre_reg" id="item_nombre" maxlength="140" required>
 						</div>
 					</div>
 					<div class="col-12 col-md-4">
 						<div class="form-group">
 							<label for="item_stock" class="bmd-label-floating">Stock</label>
-							<input type="num" pattern="[0-9]{1,9}" class="form-control" name="item_stock_reg" id="item_stock" maxlength="9">
+							<input type="num" pattern="[0-9]{1,9}" class="form-control" name="item_stock_reg" id="item_stock" maxlength="9" required>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<label for="item_estado" class="bmd-label-floating">Estado</label>
 							<select class="form-control" name="item_estado_reg" id="item_estado">
-								<option value="" selected="" >Seleccione una opción</option>
+								<option value="" selected="" required>Seleccione una opción</option>
 								<option value="Habilitado">Habilitado</option>
 								<option value="Deshabilitado">Deshabilitado</option>
 							</select>
