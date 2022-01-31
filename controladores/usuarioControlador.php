@@ -232,9 +232,8 @@
 				];
             }
             echo json_encode($alerta);
-            /* Fin del controlador */
 
-        }
+        } /* Fin del controlador */
 
         /*---------- Controlador paginar usuario ----------*/
         public function paginador_usuario_controlador($pagina, $registros, $privilegio,

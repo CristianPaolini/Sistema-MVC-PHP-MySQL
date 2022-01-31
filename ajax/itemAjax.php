@@ -2,7 +2,7 @@
     $peticionAjax = true;
     require_once "../config/APP.php";
 
-    if (isset($_POST['item_codigo_reg'])) { 
+    if (isset($_POST['item_codigo_reg']) || isset($_POST['item_id_del'])) { 
 
         /*---------- Instancia al controlador ----------*/
         require_once "../controladores/itemControlador.php";
@@ -11,6 +11,11 @@
         /*---------- Agregar item ----------*/
         if (isset($_POST['item_codigo_reg'])) {
             echo $ins_item->agregar_item_controlador();
+        }
+
+        /*---------- Eliminar item ----------*/
+        if (isset($_POST['item_id_del'])) {
+            echo $ins_item->eliminar_item_controlador();
         }
 
     } else {

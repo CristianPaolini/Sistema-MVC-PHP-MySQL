@@ -18,4 +18,13 @@
 
             return $sql;
         }
+
+        /*---------- Modelo eliminar item ----------*/
+        protected static function eliminar_item_modelo($id) {
+            $sql = mainModel::conectar()->prepare("DELETE FROM item WHERE item_id = :ID");
+            $sql->bindParam(':ID', $id);
+            $sql->execute();
+
+            return $sql;
+        }
     }

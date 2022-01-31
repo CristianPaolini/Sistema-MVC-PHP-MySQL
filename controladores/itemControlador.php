@@ -260,5 +260,11 @@
 
             return $tabla;
 
-    } /* Fin del controlador */
+        } /* Fin del controlador */
+
+        /*---------- Controlador eliminar item ----------*/
+        public function eliminar_item_controlador() {
+        
+        } /* Fin del controlador */
+    
     }
