@@ -351,11 +351,11 @@
         /*---------- Controlador eliminar usuario ----------*/
         public function eliminar_usuario_controlador() {
 
-            /* recibiendo id del usuario */
+            /*== recibiendo id del usuario ==*/
             $id = mainModel::decryption($_POST['usuario_id_del']);
             $id = mainModel::limpiar_cadena($id);
 
-            /* comprobando el usuario principal */
+            /*== comprobando el usuario principal ==*/
             if ($id == 1) { 
                 $alerta = [
 					"Alerta"=>"simple",
@@ -367,7 +367,7 @@
 				exit();
             }
 
-            /* comprobando el usuario en BD */
+            /*== comprobando el usuario en BD ==*/
             $check_usuario = mainModel::ejecutar_consulta_simple("SELECT usuario_id FROM
                 usuario WHERE usuario_id = '$id'");
 
@@ -382,7 +382,7 @@
 				exit();
             }
 
-            /* comprobando los préstamos */
+            /*== comprobando los préstamos ==*/
             $check_prestamos = mainModel::ejecutar_consulta_simple("SELECT usuario_id FROM
                 prestamo WHERE usuario_id = '$id' LIMIT 1"); // Con que tenga uno, ya es suficiente. No es necesario traer todos los préstamos de ese usuario con la query
 
@@ -399,7 +399,7 @@
 				exit();
             }
 
-            /* comprobando privilegios */
+            /*== comprobando privilegios ==*/
             session_start(['name'=>'SPM']);
             if ($_SESSION['privilegio_spm'] != 1) {
                 $alerta = [
@@ -446,11 +446,11 @@
         /*---------- Controlador actualizar usuario ----------*/
         public function actualizar_usuario_controlador() {
 
-            // Recibiendo el id
+            /*== Recibiendo el id ==*/
             $id = mainModel::decryption($_POST['usuario_id_up']);
             $id = mainModel::limpiar_cadena($id);
 
-            // Comprobar el usuario en la BD
+            /*== Comprobar el usuario en la BD ==*/
             $check_user = mainModel::ejecutar_consulta_simple("SELECT * FROM
                 usuario WHERE usuario_id = '$id'");
             if ($check_user->rowCount() <= 0) {

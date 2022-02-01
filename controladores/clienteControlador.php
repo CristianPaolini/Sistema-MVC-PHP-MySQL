@@ -253,11 +253,11 @@
         /*---------- Controlador eliminar clientes ----------*/
         public function eliminar_cliente_controlador() {
 
-            // Recuperar id del cliente
+            /*== Recuperar id del cliente ==*/
             $id = mainModel::decryption($_POST['cliente_id_del']);
             $id = mainModel::limpiar_cadena($id);
 
-            // Comprobar el cliente en la BD
+            /*== Comprobar el cliente en la BD ==*/
             $check_cliente = mainModel::ejecutar_consulta_simple("SELECT cliente_id FROM cliente
                 WHERE cliente_id = '$id'");
             if ($check_cliente->rowCount() <= 0) {
@@ -271,7 +271,7 @@
                 exit();
             }
 
-            // Comprobar préstamos
+            /*== Comprobar préstamos ==*/
             $check_prestamos = mainModel::ejecutar_consulta_simple("SELECT cliente_id FROM
                 prestamo WHERE cliente_id = '$id' LIMIT 1");
             if ($check_prestamos->rowCount() > 0) {
@@ -285,7 +285,7 @@
                 exit();
             } 
 
-            // Comprobar los privilegios
+            /*== Comprobar los privilegios ==*/
             session_start(['name'=>'SPM']);
             if ($_SESSION['privilegio_spm'] != 1) {
                 $alerta = [
@@ -330,11 +330,11 @@
 
         /*---------- Controlador actualizar cliente ----------*/
         public function actualizar_cliente_controlador() {
-            // recuperar el id
+            /*== recuperar el id ==*/
             $id = mainModel::decryption($_POST['cliente_id_up']);
             $id = mainModel::limpiar_cadena($id);
 
-            // comprobar el cliente en la db
+            /*== comprobar el cliente en la BD ==*/
             $check_cliente = mainModel::ejecutar_consulta_simple("SELECT * FROM cliente WHERE
                 cliente_id = '$id'");
             if ($check_cliente->rowCount() <= 0) {

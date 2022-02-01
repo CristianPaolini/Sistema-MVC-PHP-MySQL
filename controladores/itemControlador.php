@@ -265,6 +265,72 @@
         /*---------- Controlador eliminar item ----------*/
         public function eliminar_item_controlador() {
         
+            /*== recibiendo id del item ==*/
+            $id = mainModel::decryption($_POST['item_id_del']);
+            $id = mainModel::limpiar_cadena($id);
+
+            /*== comprobar item en BD ==*/
+            $check_item = mainModel::ejecutar_consulta_simple("SELECT item_id FROM item
+                WHERE item_id = '$id'");
+            if ($check_item->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El item que intenta eliminar no existe en el sistema.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== comprobando detalles de préstamo ==*/
+            $check_prestamos = mainModel::ejecutar_consulta_simple("SELECT item_id FROM detalle
+                WHERE item_id = '$id' LIMIT 1");
+            if ($check_prestamos->rowCount() > 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se puede eliminar el item, ya que tiene préstamos
+                    asociados, se recomienda deshabilitar el item si ya no será
+                    utilizado.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Comprobar los privilegios ==*/
+            session_start(['name'=>'SPM']);
+            if ($_SESSION['privilegio_spm'] != 1) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No tiene los permisos necesarios para realizar esta operación.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            $eliminar_item = itemModelo::eliminar_item_modelo($id);
+
+            if ($eliminar_item->rowCount() == 1) {
+                $alerta = [
+					"Alerta"=>"recargar",
+					"Titulo"=>"Item eliminado",
+					"Texto"=>"El item ha sido eliminado del sistema exitosamente.",
+					"Tipo"=>"success"
+				];
+            } else {
+                $alerta = [
+					"Alerta"=>"simple",
+					"Titulo"=>"Ocurrió un error inesperado",
+					"Texto"=>"No se pudo eliminar el item. Por favor intente nuevamente.",
+					"Tipo"=>"error"
+				];
+            }
+            echo json_encode($alerta);
+
         } /* Fin del controlador */
     
     }
