@@ -71,13 +71,11 @@
 						<div class="form-group">
 							<label for="item_estado" class="bmd-label-floating">Estado</label>
 							<select class="form-control" name="item_estado_up" id="item_estado">
-								<option value="Habilitado" <?php if ($campos['item_estado'] == 'Habilitado') { 
-									echo 'selected'; } ?> >Habilitado <?php if ($campos['item_estado'] == 'Habilitado') { 
-										echo '(Actual)'; } ?></option>
+								<option value="Habilitado" <?php echo ($campos['item_estado'] == 'Habilitado') ? 'selected' : ''; ?>
+								>Habilitado <?php echo ($campos['item_estado'] == 'Habilitado') ? '(Actual)' : ''; ?></option>
 										
-								<option value="Deshabilitado" <?php if ($campos['item_estado'] == 'Deshabilitado') { 
-									echo 'selected'; } ?> >Deshabilitado <?php if ($campos['item_estado'] == 'Deshabilitado') { 
-										echo '(Actual)'; } ?></option>
+								<option value="Deshabilitado" <?php echo ($campos['item_estado'] == 'Deshabilitado') ? 'selected' : ''; ?>
+								>Deshabilitado <?php echo ($campos['item_estado'] == 'Deshabilitado') ? '(Actual)' : ''; ?></option>
 							</select>
 						</div>
 					</div>
