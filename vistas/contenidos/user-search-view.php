@@ -77,12 +77,12 @@
 </div>
 
 <div class="container-fluid">
-<?php 
-	require_once "./controladores/usuarioControlador.php";
-	$ins_usuario = new usuarioControlador();
+	<?php 
+		require_once "./controladores/usuarioControlador.php";
+		$ins_usuario = new usuarioControlador();
 
-	echo $ins_usuario->paginador_usuario_controlador($pagina[1], 15,
-		$_SESSION['privilegio_spm'], $_SESSION['id_spm'], $pagina[0], $_SESSION['busqueda_usuario']); // filtro y traigo de la lista el valor buscado
-?>
+		echo $ins_usuario->paginador_usuario_controlador($pagina[1], 15,
+			$_SESSION['privilegio_spm'], $_SESSION['id_spm'], $pagina[0], $_SESSION['busqueda_usuario']); // filtro y traigo de la lista el valor buscado
+	?>
 </div>
 <?php } ?>

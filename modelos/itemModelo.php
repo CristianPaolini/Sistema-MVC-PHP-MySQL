@@ -41,4 +41,21 @@
 
             return $sql;
         }
+
+        /*---------- Modelo actualizar item ----------*/
+        protected static function actualizar_item_modelo($datos) {
+            $sql = mainModel::conectar()->prepare("UPDATE item SET item_codigo = :Codigo,
+                item_nombre = :Nombre, item_stock = :Stock, item_estado = :Estado,
+                item_detalle = :Detalle WHERE item_id = :ID");
+
+            $sql->bindParam(':Codigo', $datos['Codigo']);
+            $sql->bindParam(':Nombre', $datos['Nombre']);
+            $sql->bindParam(':Stock', $datos['Stock']);
+            $sql->bindParam(':Estado', $datos['Estado']);
+            $sql->bindParam(':Detalle', $datos['Detalle']);
+            $sql->bindParam(':ID', $datos['ID']);
+            $sql->execute();
+
+            return $sql;
+        }
     }

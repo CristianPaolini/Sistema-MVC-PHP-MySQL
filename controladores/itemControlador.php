@@ -342,5 +342,10 @@
 
             return itemModelo::datos_item_modelo($tipo, $id);
         } /* Fin del controlador */
+
+        /*---------- Controlador actualizar item ----------*/
+        public function actualizar_item_controlador() {
+            
+        } /* Fin del controlador */
     
     }
