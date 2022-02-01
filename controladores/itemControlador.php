@@ -373,7 +373,7 @@
 
             /*== Comprobar campos vacíos ==*/
             if ($codigo == "" || $nombre == "" || $stock == "" ||
-            $estado == "") {
+                $estado == "") {
                 $alerta = [
                     "Alerta"=>"simple",
                     "Titulo"=>"Ocurrió un error inesperado",
@@ -473,6 +473,45 @@
                     exit();
                 }
             }
+
+            /*== Comprobar privilegios ==*/
+            session_start(['name'=>'SPM']);
+            if ($_SESSION['privilegio_spm'] < 1 || $_SESSION['privilegio_spm'] > 2) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No tiene los permisos necesarios para realizar esta operación.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            $datos_item_up = [
+                "Codigo"=>$codigo,
+                "Nombre"=>$nombre,
+                "Stock"=>$stock,
+                "Estado"=>$estado,
+                "Detalle"=>$detalle,
+                "ID"=>$id
+            ];
+
+            if (itemModelo::actualizar_item_modelo($datos_item_up)) {
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Datos actualizados",
+                    "Texto"=>"Los datos del item han sido actualizados con éxito.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo actualizar los datos del item. Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
         } /* Fin del controlador */
     
     }
