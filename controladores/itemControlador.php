@@ -345,7 +345,134 @@
 
         /*---------- Controlador actualizar item ----------*/
         public function actualizar_item_controlador() {
-            
+            /*== recuperar el id ==*/
+            $id = mainModel::decryption($_POST['item_id_up']);
+            $id = mainModel::limpiar_cadena($id);
+
+            /*== comprobar el item en la BD ==*/
+            $check_item = mainModel::ejecutar_consulta_simple("SELECT * FROM item WHERE
+                item_id = '$id'");
+            if ($check_item->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se ha encontrado un cliente que corresponda a su búsqueda.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            } else {
+                $campos = $check_item->fetch();
+            }
+
+            $codigo = mainModel::limpiar_cadena($_POST['item_codigo_up']);
+            $nombre = mainModel::limpiar_cadena($_POST['item_nombre_up']);
+            $stock = mainModel::limpiar_cadena($_POST['item_stock_up']);
+            $estado = mainModel::limpiar_cadena($_POST['item_estado_up']);
+            $detalle = mainModel::limpiar_cadena($_POST['item_detalle_up']);
+
+            /*== Comprobar campos vacíos ==*/
+            if ($codigo == "" || $nombre == "" || $stock == "" ||
+            $estado == "") {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No ha completado todos los campos obligatorios.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Verificar integridad de los datos ==*/
+            if (mainModel::verificar_datos("[a-zA-Z0-9-]{1,45}", $codigo)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de CÓDIGO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_datos("[a-zA-záéíóúÁÉÍÓÚñÑ0-9 ]{1,140}", $nombre)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de NOMBRE no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_datos("[0-9]{1,9}", $stock)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de STOCK no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if ($detalle != "") {
+                if (mainModel::verificar_datos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{1,190}", $detalle)) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"El formato de DETALLE de item no es válido.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
+
+            if ($estado != "Habilitado" && $estado != "Deshabilitado") {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de ESTADO de item no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Comprobar código ==*/
+            if ($codigo != $campos['item_codigo']) {
+                $check_codigo = mainModel::ejecutar_consulta_simple("SELECT item_codigo FROM item WHERE
+                    item_codigo = '$codigo'");
+                if ($check_codigo->rowCount() >= 1) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"El CÓDIGO de item ingresado ya se encuentra registrado en el sistema.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
+
+            /*== Comprobar nombre ==*/
+            if ($nombre != $campos['item_nombre']) {
+                $check_nombre = mainModel::ejecutar_consulta_simple("SELECT item_nombre FROM item WHERE
+                    item_nombre = '$nombre'");
+                if ($check_nombre->rowCount() >= 1) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"El NOMBRE de item ingresado ya se encuentra registrado en el sistema.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
         } /* Fin del controlador */
     
     }
