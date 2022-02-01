@@ -27,4 +27,18 @@
 
             return $sql;
         }
+
+        /*---------- Modelo datos item ----------*/
+        protected static function datos_item_modelo($tipo, $id) {
+            if ($tipo == "Unico") {
+                $sql = mainModel::conectar()->prepare("SELECT * FROM item WHERE item_id =
+                    :ID");
+                $sql->bindParam(":ID", $id);
+            } elseif ($tipo == "Conteo") {
+                $sql = mainModel::conectar()->prepare("SELECT item_id FROM item");
+            } 
+            $sql->execute();
+
+            return $sql;
+        }
     }
