@@ -229,38 +229,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="container-fluid" id="tabla_clientes">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered table-sm">
-                            <tbody>
-                                <tr class="text-center">
-                                    <td>0000000000 - Nombre del cliente</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary"><i class="fas fa-user-plus"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="text-center">
-                                    <td>0000000000 - Nombre del cliente</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary"><i class="fas fa-user-plus"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="text-center">
-                                    <td>0000000000 - Nombre del cliente</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary"><i class="fas fa-user-plus"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="alert alert-warning" role="alert">
-                    <p class="text-center mb-0">
-                        <i class="fas fa-exclamation-triangle fa-2x"></i><br>
-                        No hemos encontrado ningún cliente en el sistema que coincida con <strong>“Busqueda”</strong>
-                    </p>
-                </div>
+                <div class="container-fluid" id="tabla_clientes"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="buscar_cliente()">
