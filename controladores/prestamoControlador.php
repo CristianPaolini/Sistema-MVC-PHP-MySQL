@@ -8,4 +8,8 @@
     
     class prestamoControlador extends prestamoModelo {
         
+        /*---------- Controlador buscar cliente préstamo ----------*/
+        public function buscar_cliente_prestamo_controlador() {
+            
+        } /* Fin controlador */
     }
