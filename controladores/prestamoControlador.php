@@ -60,4 +60,9 @@
             }
             
         } /* Fin controlador */
+
+        /*---------- Controlador agregar cliente préstamo ----------*/
+        public function agregar_cliente_prestamo_controlador() {
+
+        } /* Fin controlador */
     }

@@ -146,119 +146,119 @@
         public function paginador_item_controlador($pagina, $registros, $privilegio,
         $url, $busqueda) {
 
-        $pagina = mainModel::limpiar_cadena($pagina);
-        $registros = mainModel::limpiar_cadena($registros);
-        $privilegio = mainModel::limpiar_cadena($privilegio);
+            $pagina = mainModel::limpiar_cadena($pagina);
+            $registros = mainModel::limpiar_cadena($registros);
+            $privilegio = mainModel::limpiar_cadena($privilegio);
 
-        $url = mainModel::limpiar_cadena($url);
-        $url = SERVERURL.$url."/";
+            $url = mainModel::limpiar_cadena($url);
+            $url = SERVERURL.$url."/";
 
-        $busqueda = mainModel::limpiar_cadena($busqueda);
-        $tabla = "";
+            $busqueda = mainModel::limpiar_cadena($busqueda);
+            $tabla = "";
 
-        $pagina = (isset($pagina) && $pagina > 0) ? (int) $pagina : 1 ;
-        $inicio = ($pagina > 0) ? (($pagina * $registros) - $registros) : 0 ;
+            $pagina = (isset($pagina) && $pagina > 0) ? (int) $pagina : 1 ;
+            $inicio = ($pagina > 0) ? (($pagina * $registros) - $registros) : 0 ;
 
-        if (isset($busqueda) && $busqueda != "") {
-            $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM item WHERE item_codigo LIKE
-            '%$busqueda%' OR item_nombre LIKE '%$busqueda%' ORDER BY item_nombre
-                ASC LIMIT $inicio, $registros";
-        } else {
-            $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM item ORDER BY item_nombre 
-                ASC LIMIT $inicio, $registros";
-        }
+            if (isset($busqueda) && $busqueda != "") {
+                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM item WHERE item_codigo LIKE
+                '%$busqueda%' OR item_nombre LIKE '%$busqueda%' ORDER BY item_nombre
+                    ASC LIMIT $inicio, $registros";
+            } else {
+                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM item ORDER BY item_nombre 
+                    ASC LIMIT $inicio, $registros";
+            }
 
-        $conexion = mainModel::conectar();
+            $conexion = mainModel::conectar();
 
-        $datos = $conexion->query($consulta);
-        $datos = $datos->fetchAll();
+            $datos = $conexion->query($consulta);
+            $datos = $datos->fetchAll();
 
-        $total = $conexion->query("SELECT FOUND_ROWS()");
-        $total = (int)$total->fetchColumn();
+            $total = $conexion->query("SELECT FOUND_ROWS()");
+            $total = (int)$total->fetchColumn();
 
-        $Npaginas = ceil($total / $registros);
+            $Npaginas = ceil($total / $registros);
 
-        $tabla.='<div class="table-responsive">
-        <table class="table table-dark table-sm">
-            <thead>
-                <tr class="text-center roboto-medium">
-                    <th>#</th>
-                    <th>CÓDIGO</th>
-                    <th>NOMBRE</th>
-                    <th>STOCK</th>
-                    <th>ESTADO</th>
-                    <th>DETALLE</th>';
-                    if ($privilegio == 1 || $privilegio == 2) {
-                        $tabla.='<th>ACTUALIZAR</th>';
-                    }
-                    if ($privilegio == 1) {
-                        $tabla.='<th>ELIMINAR</th>';
-                    }
-        $tabla.='</tr>
-            </thead>
-            <tbody>';
-
-            if ($total >= 1 && $pagina <= $Npaginas) {
-                $contador = $inicio + 1;
-                $reg_inicio = $inicio + 1;
-                foreach ($datos as $rows) {
-                    $tabla.='
-                    <tr class="text-center" >
-                        <td>'.$contador.'</td>
-                        <td>'.$rows['item_codigo'].'</td>
-                        <td>'.$rows['item_nombre'].'</td>
-                        <td>'.$rows['item_stock'].'</td>
-                        <td>'.$rows['item_estado'].'</td>
-                        <td><button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover"
-                        title="'.$rows['item_nombre'].'"
-                        data-content="'.$rows['item_detalle'].'">
-                        <i class="fas fa-info-circle"></i>
-                            </button></td>';
+            $tabla.='<div class="table-responsive">
+            <table class="table table-dark table-sm">
+                <thead>
+                    <tr class="text-center roboto-medium">
+                        <th>#</th>
+                        <th>CÓDIGO</th>
+                        <th>NOMBRE</th>
+                        <th>STOCK</th>
+                        <th>ESTADO</th>
+                        <th>DETALLE</th>';
                         if ($privilegio == 1 || $privilegio == 2) {
-                    $tabla.='<td>
-                                <a href="'.SERVERURL.'item-update/'.mainModel::encryption($rows['item_id']).'/" 
-                                class="btn btn-success">
-                                        <i class="fas fa-sync-alt"></i>	
-                                </a>
-                            </td>';
+                            $tabla.='<th>ACTUALIZAR</th>';
                         }
                         if ($privilegio == 1) {
-                    $tabla.='<td>
-                                <form class="FormularioAjax" action="'.SERVERURL.'ajax/itemAjax.php"
-                                    method="POST" data-form="delete"
-                                    autocomplete="off">
-                                    <input type="hidden" name="item_id_del" value="'.mainModel::encryption($rows['item_id']).'">
-                                    <button type="submit" class="btn btn-warning">
-                                            <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </td>';
+                            $tabla.='<th>ELIMINAR</th>';
                         }
-            $tabla.='</tr>';
-                    $contador++;
-                }
-                $reg_final = $contador - 1;
-            } else {
-                if ($total >= 1) {
-                    $tabla.='<tr class="text-center" ><td colspan="8">
-                    <a href="'.$url.'" class="btn btn-raised btn-primary btn-sm">Click aquí para recargar el listado</a>
-                    </td></tr>';
+            $tabla.='</tr>
+                </thead>
+                <tbody>';
+
+                if ($total >= 1 && $pagina <= $Npaginas) {
+                    $contador = $inicio + 1;
+                    $reg_inicio = $inicio + 1;
+                    foreach ($datos as $rows) {
+                        $tabla.='
+                        <tr class="text-center" >
+                            <td>'.$contador.'</td>
+                            <td>'.$rows['item_codigo'].'</td>
+                            <td>'.$rows['item_nombre'].'</td>
+                            <td>'.$rows['item_stock'].'</td>
+                            <td>'.$rows['item_estado'].'</td>
+                            <td><button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover"
+                            title="'.$rows['item_nombre'].'"
+                            data-content="'.$rows['item_detalle'].'">
+                            <i class="fas fa-info-circle"></i>
+                                </button></td>';
+                            if ($privilegio == 1 || $privilegio == 2) {
+                        $tabla.='<td>
+                                    <a href="'.SERVERURL.'item-update/'.mainModel::encryption($rows['item_id']).'/" 
+                                    class="btn btn-success">
+                                            <i class="fas fa-sync-alt"></i>	
+                                    </a>
+                                </td>';
+                            }
+                            if ($privilegio == 1) {
+                        $tabla.='<td>
+                                    <form class="FormularioAjax" action="'.SERVERURL.'ajax/itemAjax.php"
+                                        method="POST" data-form="delete"
+                                        autocomplete="off">
+                                        <input type="hidden" name="item_id_del" value="'.mainModel::encryption($rows['item_id']).'">
+                                        <button type="submit" class="btn btn-warning">
+                                                <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>';
+                            }
+                $tabla.='</tr>';
+                        $contador++;
+                    }
+                    $reg_final = $contador - 1;
                 } else {
-                    $tabla.='<tr class="text-center" ><td colspan="8">No hay registros en el
-                sistema.</td></tr>';
+                    if ($total >= 1) {
+                        $tabla.='<tr class="text-center" ><td colspan="8">
+                        <a href="'.$url.'" class="btn btn-raised btn-primary btn-sm">Click aquí para recargar el listado</a>
+                        </td></tr>';
+                    } else {
+                        $tabla.='<tr class="text-center" ><td colspan="8">No hay registros en el
+                    sistema.</td></tr>';
+                    }
+                    
                 }
-                
-            }
-            $tabla.='</tbody></table></div>';
+                $tabla.='</tbody></table></div>';
 
-            if ($total >= 1 && $pagina <= $Npaginas) {
-                $tabla.='<p class="text-right">Mostrando item(s) '.$reg_inicio.'
-                    al '.$reg_final.' de un total de '.$total.'</p>';
+                if ($total >= 1 && $pagina <= $Npaginas) {
+                    $tabla.='<p class="text-right">Mostrando item(s) '.$reg_inicio.'
+                        al '.$reg_final.' de un total de '.$total.'</p>';
 
-                $tabla.=mainModel::paginador_tablas($pagina, $Npaginas, $url, 7);
-            }
+                    $tabla.=mainModel::paginador_tablas($pagina, $Npaginas, $url, 7);
+                }
 
-            return $tabla;
+                return $tabla;
 
         } /* Fin del controlador */
 
