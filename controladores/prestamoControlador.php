@@ -140,4 +140,9 @@
             echo json_encode($alerta);
 
         } /* Fin controlador */
+
+        /*---------- Controlador buscar item préstamo ----------*/
+        public function buscar_item_prestamo_controlador() {
+
+        } /* Fin controlador */
     }

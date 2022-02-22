@@ -59,4 +59,33 @@
                 }
             });
     }
+
+    /*---------- buscar item ----------*/
+    function buscar_item() {
+        let input_item = document.querySelector('#input_item').value;
+
+        input_item = input_item.trim();
+
+        if (input_item != "") {
+            let datos = new FormData();
+            datos.append("buscar_item", input_item);
+
+            fetch("<?php echo SERVERURL; ?>ajax/prestamoAjax.php", {
+                method: 'POST',
+                body: datos
+            })
+            .then(respuesta => respuesta.text())
+            .then(respuesta => {
+                let tabla_items = document.querySelector('#tabla_items');
+                tabla_items.innerHTML = respuesta;
+            });
+        } else {
+            Swal.fire({
+            title: 'Ocurrió un error',
+            text: 'Debe introducir CÓDIGO o NOMBRE del item a buscar. ',
+            type: 'error',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+    }
 </script>
