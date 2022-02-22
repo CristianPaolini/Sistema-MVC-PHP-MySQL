@@ -2,7 +2,8 @@
     $peticionAjax = true;
     require_once "../config/APP.php";
 
-    if (isset($_POST['buscar_cliente']) || isset($_POST['id_agregar_cliente'])) { 
+    if (isset($_POST['buscar_cliente']) || isset($_POST['id_agregar_cliente'])
+        || isset($_POST['id_eliminar_cliente'])) { 
 
         /*---------- Instancia al controlador ----------*/
         require_once "../controladores/prestamoControlador.php";
@@ -16,6 +17,11 @@
         /*---------- agregar cliente ----------*/
         if (isset($_POST['id_agregar_cliente'])) {
             echo $ins_prestamo->agregar_cliente_prestamo_controlador();
+        }
+
+        /*---------- eliminar cliente ----------*/
+        if (isset($_POST['id_eliminar_cliente'])) {
+            echo $ins_prestamo->eliminar_cliente_prestamo_controlador();
         }
 
     } else {

@@ -113,4 +113,31 @@
             }
             
         } /* Fin controlador */
+
+        /*---------- Controlador eliminar cliente préstamo ----------*/
+        public function eliminar_cliente_prestamo_controlador() {
+
+            /* Iniciando la sesión */
+            session_start(['name'=>'SPM']);
+
+            unset($_SESSION['datos_cliente']);
+
+            if (empty($_SESSION['datos_cliente'])) {
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Cliente removido",
+                    "Texto"=>"Los datos del cliente han sido removidos con éxito.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo remover los datos del cliente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
+
+        } /* Fin controlador */
     }
