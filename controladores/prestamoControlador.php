@@ -63,6 +63,54 @@
 
         /*---------- Controlador agregar cliente préstamo ----------*/
         public function agregar_cliente_prestamo_controlador() {
+            /* Recuperar el id */
+            $id = mainModel::limpiar_cadena($_POST['id_agregar_cliente']);
 
+            /* Comprobando el cliente en la BD */
+            $check_cliente = mainModel::ejecutar_consulta_simple("SELECT * FROM cliente WHERE
+                cliente_id = '$id'");
+
+            if ($check_cliente->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se encontró el cliente en la base de datos.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            } else {
+                $campos = $check_cliente->fetch();
+            }
+            
+            /* Iniciando la sesión */
+            session_start(['name'=>'SPM']);
+
+            if (empty($_SESSION['datos_cliente'])) {
+                $_SESSION['datos_cliente'] = [
+                    "ID"=>$campos['cliente_id'],
+                    "DNI"=>$campos['cliente_dni'],
+                    "Nombre"=>$campos['cliente_nombre'],
+                    "Apellido"=>$campos['cliente_apellido'],
+
+                ];
+
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Cliente agregado",
+                    "Texto"=>"El cliente se agregó para realizar un préstamo.",
+                    "Tipo"=>"success"
+                ];
+                echo json_encode($alerta);
+            } else { // Si ya hay un cliente guardado en sesión, viene por el else
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo agregar el cliente al préstamo.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+            }
+            
         } /* Fin controlador */
     }
