@@ -42,21 +42,21 @@
             confirmButtonText: 'Sí, agregar',
             cancelButtonText: 'No, cancelar'
             }).then((result) => {
-            if (result.value) {
-                let datos = new FormData();
-                datos.append("id_agregar_cliente", id);
+                if (result.value) {
+                    let datos = new FormData();
+                    datos.append("id_agregar_cliente", id);
 
-                fetch("<?php echo SERVERURL; ?>ajax/prestamoAjax.php", {
-                    method: 'POST',
-                    body: datos
-                })
-                .then(respuesta => respuesta.json())
-                .then(respuesta => {
-                    return alertas_ajax(respuesta);
-                });
-            } else {
-                $('#ModalCliente').modal('show');
-            }
+                    fetch("<?php echo SERVERURL; ?>ajax/prestamoAjax.php", {
+                        method: 'POST',
+                        body: datos
+                    })
+                    .then(respuesta => respuesta.json())
+                    .then(respuesta => {
+                        return alertas_ajax(respuesta);
+                    });
+                } else {
+                    $('#ModalCliente').modal('show');
+                }
             });
     }
 </script>
