@@ -143,6 +143,52 @@
 
         /*---------- Controlador buscar item préstamo ----------*/
         public function buscar_item_prestamo_controlador() {
+            /* Recuperar el texto */
+            $item = mainModel::limpiar_cadena($_POST['buscar_item']);
 
+            /* Comprobar texto */
+            if ($item == "") {
+                return '<div class="alert alert-warning" role="alert">
+                            <p class="text-center mb-0">
+                                <i class="fas fa-exclamation-triangle fa-2x"></i><br>
+                                Debe introducir al menos uno de los siguientes valores: CÓDIGO, NOMBRE DEL ITEM.
+                            </p>
+                        </div>';
+                        exit();
+            }
+
+            /* Seleccionar items en BD */
+            $datos_item = mainModel::ejecutar_consulta_simple("SELECT * FROM item WHERE (item_codigo LIKE '%$item%'
+                OR item_nombre LIKE '%$item%') AND (item_estado = 'Habilitado') ORDER BY item_nombre ASC");
+
+            if ($datos_item->rowCount() >= 1) {
+                $datos_item = $datos_item->fetchAll();
+
+                $tabla = '<div class="table-responsive"><table class="table
+                    table-hover table-bordered table-sm"><tbody>';
+                foreach ($datos_item as $rows) {
+                    $tabla.= '<tr class="text-center">
+                                <td>'.$rows['item_codigo'].'-'.$rows['item_nombre'].'</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" onclick="modal_agregar_item('.$rows['item_id'].')">
+                                    <i class="fas fa-box-open"></i>
+                                    </button>
+                                </td>
+                            </tr>';
+                }
+                $tabla.= '</tbody></table>
+                    </div>';
+                return $tabla;
+                    
+            } else {
+                return '<div class="alert alert-warning" role="alert">
+                            <p class="text-center mb-0">
+                                <i class="fas fa-exclamation-triangle fa-2x"></i><br>
+                                No hemos encontrado ningún item en el sistema que coincida
+                                con <strong>“'.$item.'”</strong>
+                            </p>
+                        </div>';
+                        exit();
+            }
         } /* Fin controlador */
     }
