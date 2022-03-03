@@ -78,18 +78,21 @@
                                     $subtotal = number_format($subtotal, 2, '.', '');
                         ?>
                         <tr class="text-center" >
-                            <td>Silla plastica</td>
-                            <td>7</td>
-                            <td>Hora</td>
-                            <td>$5.00</td>
-                            <td>$35.00</td>
+                            <td><?php echo $items['Nombre']; ?></td>
+                            <td><?php echo $items['Cantidad']; ?></td>
+                            <td><?php echo $items['Tiempo']. " ".$items['Formato']; ?></td>
+                            <td><?php echo MONEDA.$items['Costo']. " x 1 ".$items['Formato']; ?></td>
+                            <td><?php echo MONEDA.$subtotal; ?></td>
                             <td>
-                                <button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover" title="Nombre del item" data-content="Detalle completo del item">
+                                <button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover"
+                                    title="<?php echo $items['Nombre']; ?>" data-content="<?php echo $items['Detalle']; ?>">
                                     <i class="fas fa-info-circle"></i>
                                 </button>
                             </td>
                             <td>
-                                <form action="">
+                                <form class="FormularioAjax" action="<?php echo SERVERURL; ?>ajax/prestamoAjax.php"
+                                    method="POST" data-form="loans" autocomplete="off">
+                                    <input type="hidden" name="id_eliminar_item" value="<?php echo $items['ID']; ?>">
                                     <button type="button" class="btn btn-warning">
                                         <i class="far fa-trash-alt"></i>
                                     </button>
@@ -97,13 +100,15 @@
                             </td>
                         </tr>
                         <?php
+                                    $SESSION['prestamo_total'] += $subtotal;
+                                    $SESSION['prestamo_item'] += $items['Cantidad'];
                                 }
                         ?>
                         <tr class="text-center bg-light">
                             <td><strong>TOTAL</strong></td>
-                            <td><strong>21 items</strong></td>
+                            <td><strong><?php echo $SESSION['prestamo_item']; ?> items</strong></td>
                             <td colspan="2"></td>
-                            <td><strong>$130.00</strong></td>
+                            <td><strong><?php echo MONEDA.number_format($SESSION['prestamo_total'], 2, '.', ''); ?></strong></td>
                             <td colspan="2"></td>
                         </tr>
                         <?php
