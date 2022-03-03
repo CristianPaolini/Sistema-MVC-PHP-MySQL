@@ -191,4 +191,9 @@
                         exit();
             }
         } /* Fin controlador */
+
+        /*---------- Controlador agregar item préstamo ----------*/
+        public function agregar_item_prestamo_controlador() {
+
+        } /* Fin controlador */
     }

@@ -88,4 +88,16 @@
           });
         }
     }
+
+    /*---------- Modales del item ----------*/
+    function modal_agregar_item(id) {
+        $('#ModalItem').modal('hide');
+        $('#ModalAgregarItem').modal('show');
+        document.querySelector('#id_agregar_item').setAttribute('value', id);
+    }
+
+    function modal_buscar_item() {
+        $('#ModalAgregarItem').modal('hide');
+        $('#ModalItem').modal('show');
+    }
 </script>
