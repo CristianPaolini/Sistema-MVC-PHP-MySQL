@@ -218,7 +218,7 @@
             $formato = mainModel::limpiar_cadena($_POST['detalle_formato']);
             $cantidad = mainModel::limpiar_cadena($_POST['detalle_cantidad']);
             $tiempo = mainModel::limpiar_cadena($_POST['detalle_tiempo']);
-            $costo = mainModel::limpiar_climpiar_cadena($_POST['detalle_costo_tiempo']);
+            $costo = mainModel::limpiar_cadena($_POST['detalle_costo_tiempo']);
 
             /*== Comprobando campos vacíos ==*/
             if ($cantidad == "" || $tiempo == "" || $costo == "") {
@@ -266,5 +266,51 @@
                 exit();
             }
 
+            if ($formato != "Horas" && $formato != "Dias" && $formato != "Evento" && $formato != "Mes") {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de FORMATO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            session_start(['name'=>'SPM']);
+
+            if (empty($_SESSION['datos_item'][$id])) {
+                $costo = number_format($costo, 2, '.', '');
+
+                $_SESSION['datos_item'][$id] = [
+                    "ID"=>$campos['item_id'],
+                    "Codigo"=>$campos['item_codigo'],
+                    "Nombre"=>$campos['item_nombre'],
+                    "Detalle"=>$campos['item_detalle'],
+                    "Formato"=>$formato,
+                    "Cantidad"=>$cantidad,
+                    "Tiempo"=>$tiempo,
+                    "Costo"=>$costo
+                ];
+
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Item agregado",
+                    "Texto"=>"El item ha sido agregado para realizar un préstamo.",
+                    "Tipo"=>"success"
+                ];
+                echo json_encode($alerta);
+                exit();
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El item que intenta agregar ya se encuentra agregado.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+            
         } /* Fin controlador */
     }
