@@ -10,10 +10,10 @@
         
         /*---------- Controlador buscar cliente préstamo ----------*/
         public function buscar_cliente_prestamo_controlador() {
-            /* Recuperar el texto */
+            /*== Recuperando el texto ==*/
             $cliente = mainModel::limpiar_cadena($_POST['buscar_cliente']);
 
-            /* Comprobar texto */
+            /*== Comprobando texto ==*/
             if ($cliente == "") {
                 return '<div class="alert alert-warning" role="alert">
                             <p class="text-center mb-0">
@@ -24,7 +24,7 @@
                         exit();
             }
 
-            /* Seleccionar clientes en BD */
+            /*== Seleccionando clientes en BD ==*/
             $datos_cliente = mainModel::ejecutar_consulta_simple("SELECT * FROM cliente WHERE cliente_dni LIKE '%$cliente%'
                 OR cliente_nombre LIKE '%$cliente%' OR cliente_apellido LIKE '%$cliente%' OR cliente_telefono LIKE
                 '%$cliente%' ORDER BY cliente_apellido ASC");
@@ -63,10 +63,10 @@
 
         /*---------- Controlador agregar cliente préstamo ----------*/
         public function agregar_cliente_prestamo_controlador() {
-            /* Recuperar el id */
+            /*== Recuperando el id ==*/
             $id = mainModel::limpiar_cadena($_POST['id_agregar_cliente']);
 
-            /* Comprobando el cliente en la BD */
+            /*== Comprobando el cliente en la BD ==*/
             $check_cliente = mainModel::ejecutar_consulta_simple("SELECT * FROM cliente WHERE
                 cliente_id = '$id'");
 
@@ -83,7 +83,7 @@
                 $campos = $check_cliente->fetch();
             }
             
-            /* Iniciando la sesión */
+            /*== Iniciando la sesión ==*/
             session_start(['name'=>'SPM']);
 
             if (empty($_SESSION['datos_cliente'])) {
@@ -117,7 +117,7 @@
         /*---------- Controlador eliminar cliente préstamo ----------*/
         public function eliminar_cliente_prestamo_controlador() {
 
-            /* Iniciando la sesión */
+            /*== Iniciando la sesión ==*/
             session_start(['name'=>'SPM']);
 
             unset($_SESSION['datos_cliente']);
@@ -143,10 +143,10 @@
 
         /*---------- Controlador buscar item préstamo ----------*/
         public function buscar_item_prestamo_controlador() {
-            /* Recuperar el texto */
+            /*== Recuperando el texto ==*/
             $item = mainModel::limpiar_cadena($_POST['buscar_item']);
 
-            /* Comprobar texto */
+            /*== Comprobando texto ==*/
             if ($item == "") {
                 return '<div class="alert alert-warning" role="alert">
                             <p class="text-center mb-0">
@@ -157,7 +157,7 @@
                         exit();
             }
 
-            /* Seleccionar items en BD */
+            /*== Seleccionando items en BD ==*/
             $datos_item = mainModel::ejecutar_consulta_simple("SELECT * FROM item WHERE (item_codigo LIKE '%$item%'
                 OR item_nombre LIKE '%$item%') AND (item_estado = 'Habilitado') ORDER BY item_nombre ASC");
 
@@ -194,6 +194,77 @@
 
         /*---------- Controlador agregar item préstamo ----------*/
         public function agregar_item_prestamo_controlador() {
+
+            /*== Recuperando id del item ==*/
+            $id = mainModel::limpiar_cadena($_POST['id_agregar_item']);
+
+            /*== Comprobando item en BD ==*/
+            $check_item = mainModel::ejecutar_consulta_simple("SELECT * FROM item WHERE item_id = '$id' AND
+                item_estado = 'Habilitado'");
+            if ($check_item->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se encontró el item en la base de datos.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            } else {
+                $campos = $check_item->fetch();
+            }
+
+            /*== Recuperando detalles del préstamo ==*/
+            $formato = mainModel::limpiar_cadena($_POST['detalle_formato']);
+            $cantidad = mainModel::limpiar_cadena($_POST['detalle_cantidad']);
+            $tiempo = mainModel::limpiar_cadena($_POST['detalle_tiempo']);
+            $costo = mainModel::limpiar_climpiar_cadena($_POST['detalle_costo_tiempo']);
+
+            /*== Comprobando campos vacíos ==*/
+            if ($cantidad == "" || $tiempo == "" || $costo == "") {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No ha completado todos los campos obligatorios.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Verificando integridad de los datos ==*/
+            if (mainModel::verificar_datos("[0-9]{1,7}", $cantidad)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de CANTIDAD no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_datos("[0-9]{1,7}", $tiempo)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de TIEMPO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_datos("[0-9.]{1,15}", $costo)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de COSTO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
 
         } /* Fin controlador */
     }
