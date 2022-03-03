@@ -90,7 +90,7 @@
     }
 
     /*---------- Modales del item ----------*/
-    function modal_agregar_item(id) {
+    function modal_agregar_item(id) { // En préstamoControlador se usa
         $('#ModalItem').modal('hide');
         $('#ModalAgregarItem').modal('show');
         document.querySelector('#id_agregar_item').setAttribute('value', id);

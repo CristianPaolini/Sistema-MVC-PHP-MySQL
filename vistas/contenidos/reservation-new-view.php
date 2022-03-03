@@ -67,6 +67,16 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                            if (isset($_SESSION['datos_item']) && count($_SESSION['datos_item']) > 0) {
+
+                                $SESSION['prestamo_total'] = 0;
+                                $SESSION['prestamo_item'] = 0;
+
+                                foreach($_SESSION['datos_item'] as $items) { // El foreach solamente va a acumular en las variables, el tr del total queda afuera
+                                    $subtotal = $items['Cantidad'] * ($items['Costo'] * $items['Tiempo']);
+                                    $subtotal = number_format($subtotal, 2, '.', '');
+                        ?>
                         <tr class="text-center" >
                             <td>Silla plastica</td>
                             <td>7</td>
@@ -86,44 +96,9 @@
                                 </form>
                             </td>
                         </tr>
-                        <tr class="text-center" >
-                            <td>Silla metalica</td>
-                            <td>9</td>
-                            <td>Día</td>
-                            <td>$5.00</td>
-                            <td>$45.00</td>
-                            <td>
-                                <button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover" title="Nombre del item" data-content="Detalle completo del item">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                            </td>
-                            <td>
-                                <form action="">
-                                    <button type="button" class="btn btn-warning">
-                                        <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr class="text-center" >
-                            <td>Mesa plastica</td>
-                            <td>5</td>
-                            <td>Evento</td>
-                            <td>$10.00</td>
-                            <td>$50.00</td>
-                            <td>
-                                <button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover" title="Nombre del item" data-content="Detalle completo del item">
-                                    <i class="fas fa-info-circle"></i>
-                                </button>
-                            </td>
-                            <td>
-                                <form action="">
-                                    <button type="button" class="btn btn-warning">
-                                        <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                        <?php
+                                }
+                        ?>
                         <tr class="text-center bg-light">
                             <td><strong>TOTAL</strong></td>
                             <td><strong>21 items</strong></td>
@@ -131,6 +106,17 @@
                             <td><strong>$130.00</strong></td>
                             <td colspan="2"></td>
                         </tr>
+                        <?php
+                            } else {
+                                $SESSION['prestamo_total'] = 0;
+                                $SESSION['prestamo_item'] = 0;
+                        ?>
+                        <tr class="text-center" >
+                            <td colspan="7">No has seleccionado ningún item.</td>
+                        </tr>
+                        <?php
+                            }      
+                        ?>
                     </tbody>
                 </table>
             </div>
