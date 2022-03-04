@@ -46,4 +46,17 @@
 
             return $sql;
         }
+
+        /*---------- Modelo agregar pago ----------*/
+        protected static function agregar_pago_modelo($datos) {
+            $sql = mainModel::conectar()->prepare("INSERT INTO pago(pago_total, pago_fecha, prestamo_codigo)
+                    VALUES(:Total, :Fecha, :Prestamo)");
+
+            $sql->bindParam(":Total", $datos['Total']);
+            $sql->bindParam(":Fecha", $datos['Fecha']);
+            $sql->bindParam(":Prestamo", $datos['Prestamo']);
+            $sql->execute();
+
+            return $sql;
+        }
     }
