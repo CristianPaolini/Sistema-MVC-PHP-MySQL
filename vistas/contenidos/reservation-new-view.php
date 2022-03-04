@@ -126,7 +126,8 @@
                 </table>
             </div>
         </div>
-		<form action="" autocomplete="off">
+		<form class="FormularioAjax" action="<?php echo SERVERURL; ?>ajax/prestamoAjax.php" 
+            method="POST" data-form="save" autocomplete="off">
             <fieldset>
                 <legend><i class="far fa-clock"></i> &nbsp; Fecha y hora de préstamo</legend>
                 <div class="container-fluid">
@@ -134,13 +135,13 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="prestamo_fecha_inicio">Fecha de préstamo</label>
-                                <input type="date" class="form-control" name="prestamo_fecha_inicio_reg" id="prestamo_fecha_inicio">
+                                <input type="date" class="form-control" name="prestamo_fecha_inicio_reg" value="<?php echo date("Y-m-d"); ?>" id="prestamo_fecha_inicio">
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="prestamo_hora_inicio">Hora de préstamo</label>
-                                <input type="time" class="form-control" name="prestamo_hora_inicio_reg" id="prestamo_hora_inicio">
+                                <input type="time" class="form-control" name="prestamo_hora_inicio_reg" value="<?php echo date("H:i"); ?>" id="prestamo_hora_inicio">
                             </div>
                         </div>
                     </div>
@@ -173,7 +174,7 @@
                             <div class="form-group">
                                 <label for="prestamo_estado" class="bmd-label-floating">Estado</label>
                                 <select class="form-control" name="prestamo_estado_reg" id="prestamo_estado">
-                                    <option value="" selected="" disabled="">Seleccione una opción</option>
+                                    <option value="" selected="">Seleccione una opción</option>
                                     <option value="Reservacion">Reservación</option>
                                     <option value="Prestamo">Préstamo</option>
                                     <option value="Finalizado">Finalizado</option>
@@ -182,13 +183,13 @@
                         </div>
 						<div class="col-12 col-md-4">
 							<div class="form-group">
-								<label for="prestamo_total" class="bmd-label-floating">Total a pagar en $</label>
-                                <input type="text" pattern="[0-9.]{1,10}" class="form-control" readonly="" value="100.00" id="prestamo_total" maxlength="10">
+								<label for="prestamo_total" class="bmd-label-floating">Total a pagar en <?php echo MONEDA; ?></label>
+                                <input type="text" pattern="[0-9.]{1,10}" class="form-control" readonly="" value="<?php echo number_format($SESSION['prestamo_total'], 2, '.', ''); ?>" id="prestamo_total" maxlength="10">
 							</div>
 						</div>
                         <div class="col-12 col-md-4">
                             <div class="form-group">
-                                <label for="prestamo_pagado" class="bmd-label-floating">Total depositado en $</label>
+                                <label for="prestamo_pagado" class="bmd-label-floating">Total depositado en <?php echo MONEDA; ?></label>
                                 <input type="text" pattern="[0-9.]{1,10}" class="form-control" name="prestamo_pagado_reg" id="prestamo_pagado" maxlength="10">
                             </div>
                         </div>
