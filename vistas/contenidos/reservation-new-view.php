@@ -93,7 +93,7 @@
                                 <form class="FormularioAjax" action="<?php echo SERVERURL; ?>ajax/prestamoAjax.php"
                                     method="POST" data-form="loans" autocomplete="off">
                                     <input type="hidden" name="id_eliminar_item" value="<?php echo $items['ID']; ?>">
-                                    <button type="button" class="btn btn-warning">
+                                    <button type="submit" class="btn btn-warning">
                                         <i class="far fa-trash-alt"></i>
                                     </button>
                                 </form>

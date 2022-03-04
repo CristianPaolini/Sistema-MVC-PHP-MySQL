@@ -4,7 +4,7 @@
 
     if (isset($_POST['buscar_cliente']) || isset($_POST['id_agregar_cliente'])
         || isset($_POST['id_eliminar_cliente']) || isset($_POST['buscar_item'])
-        || isset($_POST['id_agregar_item'])) { 
+        || isset($_POST['id_agregar_item']) || isset($_POST['id_eliminar_item'])) { 
 
         /*---------- Instancia al controlador ----------*/
         require_once "../controladores/prestamoControlador.php";
@@ -33,6 +33,11 @@
         /*---------- agregar item ----------*/
         if (isset($_POST['id_agregar_item'])) {
             echo $ins_prestamo->agregar_item_prestamo_controlador();
+        }
+
+        /*---------- eliminar item ----------*/
+        if (isset($_POST['id_eliminar_item'])) {
+            echo $ins_prestamo->eliminar_item_prestamo_controlador();
         }
 
     } else {

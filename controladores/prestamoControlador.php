@@ -313,4 +313,33 @@
             }
             
         } /* Fin controlador */
+
+        /*---------- Controlador eliminar item préstamo ----------*/
+        public function eliminar_item_prestamo_controlador() {
+            /*== Recuperando el id del item ==*/
+            $id = mainModel::limpiar_cadena($_POST['id_eliminar_item']);
+
+            /*== Iniciando la sesión ==*/
+            session_start(['name'=>'SPM']);
+
+            unset($_SESSION['datos_item'][$id]); // remuevo item mediante el id
+
+            if (empty($_SESSION['datos_item'][$id])) { // si está vacío, el item fue removido en la línea anterior
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Item removido",
+                    "Texto"=>"Los datos del item han sido removidos con éxito.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo remover los datos del item.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
+
+        } /* Fin controlador */
     }
