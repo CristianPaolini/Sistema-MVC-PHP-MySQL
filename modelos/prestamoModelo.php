@@ -28,4 +28,22 @@
 
             return $sql;
         }
+
+        /*---------- Modelo agregar detalle ----------*/
+        protected static function agregar_detalle_modelo($datos) {
+            $sql = mainModel::conectar()->prepare("INSERT INTO detalle(detalle_cantidad, detalle_formato, detalle_tiempo,
+                detalle_costo_tiempo, detalle_descripcion, prestamo_codigo, item_id)
+                    VALUES(:Cantidad, :Formato, :Tiempo, :Costo, :Descripcion, :Prestamo, :Item)");
+
+            $sql->bindParam(":Cantidad", $datos['Cantidad']);
+            $sql->bindParam(":Formato", $datos['Formato']);
+            $sql->bindParam(":Tiempo", $datos['Tiempo']);
+            $sql->bindParam(":Costo", $datos['Costo']);
+            $sql->bindParam(":Descripcion", $datos['Descripcion']);
+            $sql->bindParam(":Prestamo", $datos['Prestamo']);
+            $sql->bindParam(":Item", $datos['Item']);
+            $sql->execute();
+
+            return $sql;
+        }
     }
