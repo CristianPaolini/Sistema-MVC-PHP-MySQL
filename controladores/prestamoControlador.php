@@ -356,5 +356,121 @@
         /*---------- Controlador agregar préstamo ----------*/
         public function agregar_prestamo_controlador() {
 
+            /*== Iniciando la sesión ==*/
+            session_start(['name'=>'SPM']);
+
+            /*== Comprobando items ==*/
+            if ($SESSION['prestamo_item'] == 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No ha seleccionado ningún item para realizar el préstamo.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Comprobando cliente ==*/
+            if (empty($_SESSION['datos_cliente'])) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No ha seleccionado ningún cliente para realizar el préstamo.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Recibiendo inputs del formulario ==*/
+            $fecha_inicio = mainModel::limpiar_cadena($_POST['prestamo_fecha_inicio_reg']);
+            $hora_inicio = mainModel::limpiar_cadena($_POST['prestamo_hora_inicio_reg']);
+            $fecha_final = mainModel::limpiar_cadena($_POST['prestamo_fecha_final_reg']);
+            $hora_final = mainModel::limpiar_cadena($_POST['prestamo_hora_final_reg']);
+            $estado = mainModel::limpiar_cadena($_POST['prestamo_estado_reg']);
+            $total_pagado = mainModel::limpiar_cadena($_POST['prestamo_pagado_reg']);
+            $observacion = mainModel::limpiar_cadena($_POST['prestamo_observacion_reg']);
+
+            /*== Verificando integridad de los datos ==*/
+            if (mainModel::verificar_fecha($fecha_inicio)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de FECHA DE INICIO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_datos("([0-1][0-9]|[2][0-3])[\:]([0-5][0-9])", $hora_inicio)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de HORA DE INICIO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_fecha($fecha_final)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de FECHA DE ENTREGA no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_datos("([0-1][0-9]|[2][0-3])[\:]([0-5][0-9])", $hora_final)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de HORA DE ENTREGA no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if (mainModel::verificar_datos("[0-9.]{1,10}", $total_pagado)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de TOTAL DEPOSITADO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            if ($observacion != "") {
+                if (mainModel::verificar_datos("[a-zA-z0-9áéíóúÁÉÍÓÚñÑ#() ]{1,400}", $observacion)) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"El formato de OBSERVACIÓN no es válido.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
+
+            if ($estado != "Reservacion" && $estado != "Prestamo" && $estado != "Finalizado") {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de ESTADO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
         } /* Fin controlador */
     }

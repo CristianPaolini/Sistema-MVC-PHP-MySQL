@@ -7,7 +7,7 @@
         /*---------- Controlador obtener plantilla ----------*/
         public function obtener_plantilla_controlador() {
             return require_once "./vistas/plantilla.php";
-        }
+        } /* Fin del controlador */
 
         /*---------- Controlador obtener vistas ----------*/
         public function obtener_vistas_controlador() {
@@ -19,5 +19,5 @@
                 $respuesta = "login";
             }
             return $respuesta;
-        }
+        } /* Fin del controlador */
     }
