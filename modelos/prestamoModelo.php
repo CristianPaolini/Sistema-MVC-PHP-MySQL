@@ -96,6 +96,24 @@
                 $sql = mainModel::conectar()->prepare("SELECT * FROM pago WHERE prestamo_codigo = :Codigo");
                 $sql->bindParam(":Codigo", $id); 
             }
+
+            $sql->execute();
+
+            return $sql;
+        }
+
+        /*---------- Modelo actualizar préstamo ----------*/
+        protected static function actualizar_prestamo_modelo($datos) {
+            if ($datos['Tipo'] == "Pago") {
+                $sql = mainModel::conectar()->prepare("UPDATE prestamo SET prestamo_pagado = :Monto WHERE prestamo_codigo = :Codigo");
+                $sql->bindParam(":Monto", $datos['Monto']);
+            } elseif ($datos['Prestamo'] == "Pago") {
+                $sql = mainModel::conectar()->prepare("UPDATE prestamo SET prestamo_estado = :Estado, prestamo_observacion = :Observacion WHERE prestamo_codigo = :Codigo");
+                $sql->bindParam(":Estado", $datos['Estado']);
+                $sql->bindParam(":Observacion", $datos['Observacion']);
+            }
+
+            $sql->bindParam(":Codigo", $datos['Codigo']);
             
             $sql->execute();
 
