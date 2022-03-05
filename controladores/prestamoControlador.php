@@ -342,4 +342,19 @@
             echo json_encode($alerta);
 
         } /* Fin controlador */
+
+        /*---------- Controlador datos préstamo ----------*/
+        public function datos_prestamo_controlador($tipo, $id) {
+            $tipo = mainModel::limpiar_cadena($tipo);
+
+            $id = mainModel::decryption($id);
+            $id = mainModel::limpiar_cadena($id);
+
+            return prestamoModelo::datos_prestamo_modelo($tipo, $id);
+        } /* Fin controlador */
+
+        /*---------- Controlador agregar préstamo ----------*/
+        public function agregar_prestamo_controlador() {
+
+        } /* Fin controlador */
     }

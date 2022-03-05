@@ -50,11 +50,11 @@
         /*---------- Modelo agregar pago ----------*/
         protected static function agregar_pago_modelo($datos) {
             $sql = mainModel::conectar()->prepare("INSERT INTO pago(pago_total, pago_fecha, prestamo_codigo)
-                    VALUES(:Total, :Fecha, :Prestamo)");
+                    VALUES(:Total, :Fecha, :Codigo)");
 
             $sql->bindParam(":Total", $datos['Total']);
             $sql->bindParam(":Fecha", $datos['Fecha']);
-            $sql->bindParam(":Prestamo", $datos['Prestamo']);
+            $sql->bindParam(":Codigo", $datos['Codigo']);
             $sql->execute();
 
             return $sql;
@@ -114,7 +114,7 @@
             }
 
             $sql->bindParam(":Codigo", $datos['Codigo']);
-            
+
             $sql->execute();
 
             return $sql;

@@ -4,7 +4,8 @@
 
     if (isset($_POST['buscar_cliente']) || isset($_POST['id_agregar_cliente'])
         || isset($_POST['id_eliminar_cliente']) || isset($_POST['buscar_item'])
-        || isset($_POST['id_agregar_item']) || isset($_POST['id_eliminar_item'])) { 
+        || isset($_POST['id_agregar_item']) || isset($_POST['id_eliminar_item'])
+        || isset($_POST['prestamo_fecha_inicio_reg'])) { 
 
         /*---------- Instancia al controlador ----------*/
         require_once "../controladores/prestamoControlador.php";
@@ -38,6 +39,11 @@
         /*---------- eliminar item ----------*/
         if (isset($_POST['id_eliminar_item'])) {
             echo $ins_prestamo->eliminar_item_prestamo_controlador();
+        }
+
+        /*---------- agregar préstamo ----------*/
+        if (isset($_POST['prestamo_fecha_inicio_reg'])) {
+            echo $ins_prestamo->agregar_prestamo_controlador();
         }
 
     } else {
