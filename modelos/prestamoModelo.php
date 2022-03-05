@@ -70,7 +70,33 @@
                 $sql = mainModel::conectar()->prepare("DELETE FROM pago WHERE prestamo_codigo = :Codigo");
             }
 
-            $sql->bindParam(":Codigo", $datos['Codigo']);
+            $sql->bindParam(":Codigo", $codigo);
+            $sql->execute();
+
+            return $sql;
+        }
+
+        /*---------- Modelo datos préstamo ----------*/
+        protected static function datos_prestamo_modelo($tipo, $id){
+            if ($tipo == "Unico") {
+                $sql = mainModel::conectar()->prepare("SELECT * FROM prestamo WHERE prestamo_id = :ID");
+                $sql->bindParam(":ID", $id);
+            } elseif ($tipo == "Conteo_Reservacion") {
+                $sql = mainModel::conectar()->prepare("SELECT prestamo_id FROM prestamo WHERE prestamo_estado = 'Reservacion'");
+            } elseif ($tipo == "Conteo_Prestamos") {
+                $sql = mainModel::conectar()->prepare("SELECT prestamo_id FROM prestamo WHERE prestamo_estado = 'Prestamo'");
+            } elseif ($tipo == "Conteo_Finalizado") {
+                $sql = mainModel::conectar()->prepare("SELECT prestamo_id FROM prestamo WHERE prestamo_estado = 'Finalizado'");
+            } elseif ($tipo == "Conteo") {
+                $sql = mainModel::conectar()->prepare("SELECT prestamo_id FROM prestamo");           
+            } elseif ($tipo == "Detalle") {
+                $sql = mainModel::conectar()->prepare("SELECT * FROM detalle WHERE prestamo_codigo = :Codigo");
+                $sql->bindParam(":Codigo", $id);           
+            } elseif ($tipo == "Pago") {
+                $sql = mainModel::conectar()->prepare("SELECT * FROM pago WHERE prestamo_codigo = :Codigo");
+                $sql->bindParam(":Codigo", $id); 
+            }
+            
             $sql->execute();
 
             return $sql;
