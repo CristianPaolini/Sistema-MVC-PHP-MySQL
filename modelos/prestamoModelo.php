@@ -59,4 +59,20 @@
 
             return $sql;
         }
+
+        /*---------- Modelo eliminar préstamo ----------*/
+        protected static function eliminar_prestamo_modelo($codigo, $tipo) {
+            if ($tipo == "Prestamo") {
+                $sql = mainModel::conectar()->prepare("DELETE FROM prestamo WHERE prestamo_codigo = :Codigo");
+            } elseif ($tipo == "Detalle") {
+                $sql = mainModel::conectar()->prepare("DELETE FROM detalle WHERE prestamo_codigo = :Codigo");
+            } elseif ($tipo == "Pago") {
+                $sql = mainModel::conectar()->prepare("DELETE FROM pago WHERE prestamo_codigo = :Codigo");
+            }
+
+            $sql->bindParam(":Codigo", $datos['Codigo']);
+            $sql->execute();
+
+            return $sql;
+        }
     }
