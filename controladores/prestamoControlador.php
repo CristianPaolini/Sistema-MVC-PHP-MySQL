@@ -484,5 +484,20 @@
                 exit();
             }
 
+            /*== Formateando totales, números y fechas ==*/
+            $total_prestamo = number_format($_SESSION['prestamo_total'], 2, '.', '');
+
+            $total_pagado = number_format($total_pagado, 2, '.', '');
+
+            $fecha_inicio = date("Y-m-d", strtotime($fecha_inicio));
+            $fecha_final = date("Y-m-d", strtotime($fecha_final));
+
+            $hora_inicio = date("h:i a", strtotime($hora_inicio));
+            $hora_final = date("h:i a", strtotime($hora_final));
+
+            /*== Generando código de préstamo ==*/
+            $correlativo = mainModel::ejecutar_consulta_simple("SELECT prestamo_id FROM prestamo");
+            $correlativo = ($correlativo->rowCount()) + 1;
+            $codigo = mainModel::generar_codigo_aleatorio("CP", 7, $correlativo);
         } /* Fin controlador */
     }
