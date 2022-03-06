@@ -70,8 +70,8 @@
                         <?php
                             if (isset($_SESSION['datos_item']) && count($_SESSION['datos_item']) > 0) {
 
-                                $SESSION['prestamo_total'] = 0;
-                                $SESSION['prestamo_item'] = 0;
+                                $_SESSION['prestamo_total'] = 0;
+                                $_SESSION['prestamo_item'] = 0;
 
                                 foreach($_SESSION['datos_item'] as $items) { // El foreach solamente va a acumular en las variables, el tr del total queda afuera
                                     $subtotal = $items['Cantidad'] * ($items['Costo'] * $items['Tiempo']);
@@ -100,21 +100,21 @@
                             </td>
                         </tr>
                         <?php
-                                    $SESSION['prestamo_total'] += $subtotal;
-                                    $SESSION['prestamo_item'] += $items['Cantidad'];
+                                    $_SESSION['prestamo_total'] += $subtotal;
+                                    $_SESSION['prestamo_item'] += $items['Cantidad'];
                                 }
                         ?>
                         <tr class="text-center bg-light">
                             <td><strong>TOTAL</strong></td>
-                            <td><strong><?php echo $SESSION['prestamo_item']; ?> items</strong></td>
+                            <td><strong><?php echo $_SESSION['prestamo_item']; ?> items</strong></td>
                             <td colspan="2"></td>
-                            <td><strong><?php echo MONEDA.number_format($SESSION['prestamo_total'], 2, '.', ''); ?></strong></td>
+                            <td><strong><?php echo MONEDA.number_format($_SESSION['prestamo_total'], 2, '.', ''); ?></strong></td>
                             <td colspan="2"></td>
                         </tr>
                         <?php
                             } else {
-                                $SESSION['prestamo_total'] = 0;
-                                $SESSION['prestamo_item'] = 0;
+                                $_SESSION['prestamo_total'] = 0;
+                                $_SESSION['prestamo_item'] = 0;
                         ?>
                         <tr class="text-center" >
                             <td colspan="7">No has seleccionado ningún item.</td>
@@ -184,7 +184,7 @@
 						<div class="col-12 col-md-4">
 							<div class="form-group">
 								<label for="prestamo_total" class="bmd-label-floating">Total a pagar en <?php echo MONEDA; ?></label>
-                                <input type="text" pattern="[0-9.]{1,10}" class="form-control" readonly="" value="<?php echo number_format($SESSION['prestamo_total'], 2, '.', ''); ?>" id="prestamo_total" maxlength="10">
+                                <input type="text" pattern="[0-9.]{1,10}" class="form-control" readonly="" value="<?php echo number_format($_SESSION['prestamo_total'], 2, '.', ''); ?>" id="prestamo_total" maxlength="10">
 							</div>
 						</div>
                         <div class="col-12 col-md-4">

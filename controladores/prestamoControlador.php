@@ -360,7 +360,7 @@
             session_start(['name'=>'SPM']);
 
             /*== Comprobando items ==*/
-            if ($SESSION['prestamo_item'] == 0) {
+            if ($_SESSION['prestamo_item'] == 0) {
                 $alerta = [
                     "Alerta"=>"simple",
                     "Titulo"=>"Ocurrió un error inesperado",
@@ -466,6 +466,18 @@
                     "Alerta"=>"simple",
                     "Titulo"=>"Ocurrió un error inesperado",
                     "Texto"=>"El formato de ESTADO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Comprobando las fechas ==*/
+            if (strtotime($fecha_final) < strtotime($fecha_inicio)) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"La FECHA DE ENTREGA no puede ser anterior a la FECHA DE INICIO del préstamo.",
                     "Tipo"=>"error"
                 ];
                 echo json_encode($alerta);
