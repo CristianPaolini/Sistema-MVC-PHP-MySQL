@@ -551,5 +551,53 @@
                 echo json_encode($alerta);
                 exit();
             }
+
+            /*== Agregar detalle ==*/
+            $errores_detalle = 0;
+
+            foreach ($_SESSION['datos_item'] as $items) {
+                
+                $costo = number_format($items['Costo'], 2, '.', '');
+                $descripcion = $items['Codigo']." ".$items['Nombre'];
+
+                $datos_detalle_reg = [
+                    "Cantidad"=>$items['Cantidad'],
+                    "Formato"=>$items['Formato'],
+                    "Tiempo"=>$items['Tiempo'],
+                    "Costo"=>$costo,
+                    "Descripcion"=>$descripcion,
+                    "Prestamo"=>$codigo,
+                    "Item"=>$items['ID']
+                ];
+
+                $agregar_detalle = prestamoModelo::agregar_detalle_modelo($datos_detalle_reg);
+
+                if ($agregar_detalle->rowCount() != 1) {
+                    $errores_detalle = 1;
+                    break;
+                }
+            }
+
+            if ($errores_detalle == 0) {
+                unset($_SESSION['datos_cliente']);
+                unset($_SESSION['datos_item']);
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Préstamo registrado",
+                    "Texto"=>"Los datos del préstamo han sido registrados exitosamente.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                prestamoModelo::eliminar_prestamo_modelo($codigo, "Detalle");
+                prestamoModelo::eliminar_prestamo_modelo($codigo, "Pago");
+                prestamoModelo::eliminar_prestamo_modelo($codigo, "Prestamo");
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo registrar el préstamo (Error: 003). Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);        
         } /* Fin controlador */
     }
