@@ -637,13 +637,16 @@
                 prestamo.prestamo_total, prestamo.prestamo_pagado, prestamo.prestamo_estado, prestamo.usuario_id, prestamo.cliente_id,
                 cliente.cliente_nombre, cliente.cliente_apellido";
 
-            if (isset($busqueda) && $busqueda != "") {
-                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM item WHERE item_codigo LIKE
-                '%$busqueda%' OR item_nombre LIKE '%$busqueda%' ORDER BY item_nombre
-                    ASC LIMIT $inicio, $registros";
+            if ($tipo == "Busqueda" && $fecha_inicio != "" && $fecha_final != "") {
+                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM prestamo AS pr
+                    INNER JOIN cliente AS cl ON pr.cliente_id = cl.cliente_id
+                    WHERE pr.prestamo_fecha_inicio BETWEEN '$fecha_inicio' AND '$fecha_final'
+                    ORDER BY pr.prestamo_fecha_inicio DESC LIMIT $inicio, $registros";
             } else {
-                $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM item ORDER BY item_nombre 
-                    ASC LIMIT $inicio, $registros";
+                $consulta = "SELECT SQL_CALC_FOUND_ROWS $campos FROM prestamo AS pr
+                    INNER JOIN cliente AS cl ON pr.cliente_id = cl.cliente_id
+                    WHERE pr.prestamo_estado = '$tipo' ORDER BY pr.prestamo_fecha_inicio 
+                    DESC LIMIT $inicio, $registros";
             }
 
             $conexion = mainModel::conectar();
@@ -661,11 +664,12 @@
                 <thead>
                     <tr class="text-center roboto-medium">
                         <th>#</th>
-                        <th>CÓDIGO</th>
-                        <th>NOMBRE</th>
-                        <th>STOCK</th>
+                        <th>CLIENTE</th>
+                        <th>FECHA DE PRÉSTAMO</th>
+                        <th>FECHA DE ENTREGA</th>
+                        <th>TIPO</th>
                         <th>ESTADO</th>
-                        <th>DETALLE</th>';
+                        <th>FACTURA</th>';
                         if ($privilegio == 1 || $privilegio == 2) {
                             $tabla.='<th>ACTUALIZAR</th>';
                         }
@@ -683,10 +687,10 @@
                         $tabla.='
                         <tr class="text-center" >
                             <td>'.$contador.'</td>
-                            <td>'.$rows['item_codigo'].'</td>
-                            <td>'.$rows['item_nombre'].'</td>
-                            <td>'.$rows['item_stock'].'</td>
-                            <td>'.$rows['item_estado'].'</td>
+                            <td>'.$rows['cliente_nombre'].' '.$rows['cliente_apellido'].'</td>
+                            <td>'.date("d-m-Y", strtotime($rows['prestamo_fecha_inicio'])).'</td>
+                            <td>'.date("d-m-Y", strtotime($rows['prestamo_fecha_final'])).'</td>
+                            <td>'.$rows['prestamo_estado'].'</td>
                             <td><button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover"
                             title="'.$rows['item_nombre'].'"
                             data-content="'.$rows['item_detalle'].'">
