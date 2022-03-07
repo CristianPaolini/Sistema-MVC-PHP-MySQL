@@ -499,5 +499,57 @@
             $correlativo = mainModel::ejecutar_consulta_simple("SELECT prestamo_id FROM prestamo");
             $correlativo = ($correlativo->rowCount()) + 1;
             $codigo = mainModel::generar_codigo_aleatorio("CP", 7, $correlativo);
+
+            $datos_prestamo_reg = [
+                "Codigo"=>$codigo,
+                "FechaInicio"=>$fecha_inicio,
+                "HoraInicio"=>$hora_inicio,
+                "FechaFinal"=>$fecha_final,
+                "HoraFinal"=>$hora_final,
+                "Cantidad"=>$_SESSION['prestamo_item'],
+                "Total"=>$total_prestamo,
+                "Pagado"=>$total_pagado,
+                "Estado"=>$estado,
+                "Observacion"=>$observacion,
+                "Usuario"=>$_SESSION['id_spm'],
+                "Cliente"=>$_SESSION['datos_cliente']['ID']
+            ];
+
+            /*== Agregar préstamo ==*/
+            $agregar_prestamo = prestamoModelo::agregar_prestamo_modelo($datos_prestamo_reg);
+
+            if ($agregar_prestamo->rowCount() != 1) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo registrar el préstamo (Error: 001). Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Agregar pago ==*/
+            if ($total_pagado > 0) {
+                $datos_pago_reg = [
+                    "Total"=>$total_pagado,
+                    "Fecha"=>$fecha_inicio,
+                    "Codigo"=>$codigo
+                ];
+            }
+
+            $agregar_pago = prestamoModelo::agregar_pago_modelo($datos_pago_reg);
+
+            if ($agregar_pago->rowCount() != 1) {
+                prestamoModelo::eliminar_prestamo_modelo($codigo, "Prestamo");
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo registrar el préstamo (Error: 002). Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
         } /* Fin controlador */
     }
