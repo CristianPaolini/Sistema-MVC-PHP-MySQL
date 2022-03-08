@@ -325,7 +325,7 @@
                 $alerta = [
 					"Alerta"=>"simple",
 					"Titulo"=>"Ocurrió un error inesperado",
-					"Texto"=>"No se pudo eliminar el item. Por favor intente nuevamente.",
+					"Texto"=>"No se pudo eliminar el item. Por favor, intente nuevamente.",
 					"Tipo"=>"error"
 				];
             }

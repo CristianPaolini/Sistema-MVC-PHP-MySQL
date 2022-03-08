@@ -800,5 +800,57 @@
                 exit();
             }
 
+            /*== Comprobar y eliminar pagos ==*/
+            $check_pagos = mainModel::ejecutar_consulta_simple("SELECT prestamo_codigo FROM pago WHERE prestamo_codigo = '$codigo'");
+            $check_pagos = $check_pagos->rowCount();
+            if ($check_pagos > 0) {
+                $eliminar_pagos = prestamoModelo::eliminar_prestamo_modelo($codigo, "Pago");
+                if ($eliminar_pagos->rowCount() != $check_pagos) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"No se pudo eliminar el préstamo. Por favor, intente nuevamente.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
+
+            /*== Comprobar y eliminar detalles ==*/
+            $check_detalles = mainModel::ejecutar_consulta_simple("SELECT prestamo_codigo FROM detalle WHERE prestamo_codigo = '$codigo'");
+            $check_detalles = $check_detalles->rowCount();
+            if ($check_detalles > 0) {
+                $eliminar_detalles = prestamoModelo::eliminar_prestamo_modelo($codigo, "Detalle");
+                if ($eliminar_detalles->rowCount() != $check_detalles) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"No se pudo eliminar el préstamo. Por favor, intente nuevamente.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
+
+            /*== Comprobar y eliminar préstamos ==*/
+            $eliminar_prestamo = prestamoModelo::eliminar_prestamo_modelo($codigo, "Prestamo");
+                if ($eliminar_prestamo->rowCount() == 1) {
+                    $alerta = [
+                        "Alerta"=>"recargar",
+                        "Titulo"=>"Préstamo eliminado",
+                        "Texto"=>"El préstamo ha sido eliminado del sistema exitosamente.",
+                        "Tipo"=>"success"
+                    ];
+                } else {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"No se pudo eliminar el préstamo. Por favor, intente nuevamente.",
+                        "Tipo"=>"error"
+                    ];
+                }
+                echo json_encode($alerta);
         } /* Fin del controlador */
     }
