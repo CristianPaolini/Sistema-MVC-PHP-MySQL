@@ -765,4 +765,40 @@
                 return $tabla;
 
         } /* Fin del controlador */
+
+        /*---------- Controlador eliminar préstamos ----------*/
+        public function eliminar_prestamo_controlador() {
+
+            /*== Recibiendo código de préstamo ==*/
+            $codigo = mainModel::decryption($_POST['prestamo_codigo_del']);
+            $codigo = mainModel::limpiar_cadena($codigo);
+
+            /*== Comprobando préstamo en BD ==*/
+            $check_prestamo = mainModel::ejecutar_consulta_simple("SELECT prestamo_codigo FROM prestamo WHERE prestamo_codigo = '$codigo'");
+
+            if ($check_prestamo->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El préstamo que intenta eliminar no existe en el sistema.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Comprobar los privilegios ==*/
+            session_start(['name'=>'SPM']);
+            if ($_SESSION['privilegio_spm'] != 1) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No tiene los permisos necesarios para realizar esta operación.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+        } /* Fin del controlador */
     }
