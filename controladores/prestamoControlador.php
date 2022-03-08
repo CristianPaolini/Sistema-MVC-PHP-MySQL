@@ -633,9 +633,9 @@
                 }
             }
 
-            $campos = "prestamo.prestamo_id, prestamo.prestamo_codigo, prestamo.prestamo_fecha_inicio, prestamo.prestamo_fecha_final,
-                prestamo.prestamo_total, prestamo.prestamo_pagado, prestamo.prestamo_estado, prestamo.usuario_id, prestamo.cliente_id,
-                cliente.cliente_nombre, cliente.cliente_apellido";
+            $campos = "pr.prestamo_id, pr.prestamo_codigo, pr.prestamo_fecha_inicio, pr.prestamo_fecha_final,
+                pr.prestamo_total, pr.prestamo_pagado, pr.prestamo_estado, pr.usuario_id, pr.cliente_id,
+                cl.cliente_nombre, cl.cliente_apellido";
 
             if ($tipo == "Busqueda" && $fecha_inicio != "" && $fecha_final != "") {
                 $consulta = "SELECT SQL_CALC_FOUND_ROWS * FROM prestamo AS pr
