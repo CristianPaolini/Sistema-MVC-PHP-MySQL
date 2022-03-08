@@ -690,31 +690,53 @@
                             <td>'.$rows['cliente_nombre'].' '.$rows['cliente_apellido'].'</td>
                             <td>'.date("d-m-Y", strtotime($rows['prestamo_fecha_inicio'])).'</td>
                             <td>'.date("d-m-Y", strtotime($rows['prestamo_fecha_final'])).'</td>
-                            <td>'.$rows['prestamo_estado'].'</td>
-                            <td><button type="button" class="btn btn-info" data-toggle="popover" data-trigger="hover"
-                            title="'.$rows['item_nombre'].'"
-                            data-content="'.$rows['item_detalle'].'">
-                            <i class="fas fa-info-circle"></i>
-                                </button></td>';
-                            if ($privilegio == 1 || $privilegio == 2) {
-                        $tabla.='<td>
-                                    <a href="'.SERVERURL.'item-update/'.mainModel::encryption($rows['item_id']).'/" 
-                                    class="btn btn-success">
-                                            <i class="fas fa-sync-alt"></i>	
-                                    </a>
-                                </td>';
+                            <td>'.$rows['prestamo_estado'].'</td>';
+
+                            if ($rows['prestamo_pagado'] < $rows['prestamo_total']) {
+                                $tabla.='<td>Pendiente: 
+                                    <span class="badge badge-danger">'.MONEDA.
+                                    number_format(($rows['prestamo_total'] - $rows['prestamo_pagado']),2, '.', '').'
+                                    </span></td>';
+                            } else {
+                                $tabla.='<td><span class="badge badge-light">Cancelado</span></td>';
                             }
+
+                            $tabla.='
+                                <td>
+                                    <a href="'.SERVERURL.'facturas/invoice.php?id='.mainModel::encryption($rows['prestamo_id']).'" class="btn btn-info" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>	
+                                    </a>
+                                </td>
+                            ';
+                            
+                            if ($privilegio == 1 || $privilegio == 2) {
+
+                                if ($rows['prestamo_estado'] == "Finalizado" && $rows['prestamo_pagado'] == $rows['prestamo_total']) { // Si el préstamo está totalmente pagado, pasa por acá
+                                    $tabla.='<td>
+                                                <button class="btn btn-success" disabled>
+                                                    <i class="fas fa-sync-alt"></i>	
+                                                </button>
+                                            </td>';
+                                } else {
+                                    $tabla.='<td>
+                                                <a href="'.SERVERURL.'reservation-update/'.mainModel::encryption($rows['prestamo_id']).'/" class="btn btn-success">
+                                                    <i class="fas fa-sync-alt"></i>	
+                                                </a>
+                                            </td>';
+                                }
+                                
+                                    }
                             if ($privilegio == 1) {
-                        $tabla.='<td>
-                                    <form class="FormularioAjax" action="'.SERVERURL.'ajax/itemAjax.php"
-                                        method="POST" data-form="delete"
-                                        autocomplete="off">
-                                        <input type="hidden" name="item_id_del" value="'.mainModel::encryption($rows['item_id']).'">
-                                        <button type="submit" class="btn btn-warning">
-                                                <i class="far fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </td>';
+                                $tabla.='<td>
+                                            <form class="FormularioAjax" action="'.SERVERURL.'ajax/prestamoAjax.php"
+                                                method="POST" data-form="delete"
+                                                autocomplete="off">
+                                                <input type="hidden" name="prestamo_codigo_del" value="'.mainModel::encryption($rows['prestamo_codigo']).'">
+                                                <button type="submit" class="btn btn-warning">
+                                                        <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </td>';
                             }
                 $tabla.='</tr>';
                         $contador++;
@@ -722,11 +744,11 @@
                     $reg_final = $contador - 1;
                 } else {
                     if ($total >= 1) {
-                        $tabla.='<tr class="text-center" ><td colspan="8">
+                        $tabla.='<tr class="text-center" ><td colspan="9">
                         <a href="'.$url.'" class="btn btn-raised btn-primary btn-sm">Click aquí para recargar el listado</a>
                         </td></tr>';
                     } else {
-                        $tabla.='<tr class="text-center" ><td colspan="8">No hay registros en el
+                        $tabla.='<tr class="text-center" ><td colspan="9">No hay registros en el
                     sistema.</td></tr>';
                     }
                     
@@ -734,7 +756,7 @@
                 $tabla.='</tbody></table></div>';
 
                 if ($total >= 1 && $pagina <= $Npaginas) {
-                    $tabla.='<p class="text-right">Mostrando item(s) '.$reg_inicio.'
+                    $tabla.='<p class="text-right">Mostrando préstamo(s) '.$reg_inicio.'
                         al '.$reg_final.' de un total de '.$total.'</p>';
 
                     $tabla.=mainModel::paginador_tablas($pagina, $Npaginas, $url, 7);
