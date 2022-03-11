@@ -162,28 +162,31 @@
                             <div class="form-group">
                                 <label for="prestamo_estado" class="bmd-label-floating">*** Estado ***</label>
                                 <select class="form-control" name="prestamo_estado_up" id="prestamo_estado">
-                                    <option value="Reservacion">Reservación</option>
-                                    <option value="Prestamo">Préstamo</option>
-                                    <option value="Finalizado">Finalizado</option>
+                                    <option value="Reservacion" <?php echo ($campos['prestamo_estado'] == "Reservacion") ? 'selected' : ''; ?>
+                                    >Reservación <?php echo ($campos['prestamo_estado'] == "Reservacion") ? '(Actual)' : ''; ?></option>
+                                    <option value="Prestamo" <?php echo ($campos['prestamo_estado'] == "Prestamo") ? 'selected' : ''; ?>
+                                    >Préstamo <?php echo ($campos['prestamo_estado'] == "Prestamo") ? '(Actual)' : ''; ?></option>
+                                    <option value="Finalizado" <?php echo ($campos['prestamo_estado'] == "Finalizado") ? 'selected' : ''; ?>
+                                    >Finalizado <?php echo ($campos['prestamo_estado'] == "Finalizado") ? '(Actual)' : ''; ?></option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-12 col-md-4">
                             <div class="form-group">
-                                <label for="prestamo_total" class="bmd-label-floating">Total a pagar en $</label>
-                                <input type="text" pattern="[0-9.]{1,10}" class="form-control" readonly="" value="100.00" id="prestamo_total" maxlength="10">
+                                <label for="prestamo_total" class="bmd-label-floating">Total a pagar en <?php echo MONEDA; ?></label>
+                                <input type="text" pattern="[0-9.]{1,10}" class="form-control" readonly="" value="<?php echo $campos['prestamo_total']; ?>" id="prestamo_total" maxlength="10">
                             </div>
                         </div>
                         <div class="col-12 col-md-4">
                             <div class="form-group">
-                                <label for="prestamo_pagado" class="bmd-label-floating">Total depositado en $</label>
-                                <input type="text" pattern="[0-9.]{1,10}" class="form-control" readonly="" value="100.00" id="prestamo_pagado" maxlength="10">
+                                <label for="prestamo_pagado" class="bmd-label-floating">Total depositado en <?php echo MONEDA; ?></label>
+                                <input type="text" pattern="[0-9.]{1,10}" class="form-control" readonly="" value="<?php echo $campos['prestamo_pagado']; ?>" id="prestamo_pagado" maxlength="10">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="prestamo_observacion" class="bmd-label-floating">*** Observación ***</label>
-                                <input type="text" pattern="[a-zA-z0-9áéíóúÁÉÍÓÚñÑ#() ]{1,400}" class="form-control" name="prestamo_observacion_up" id="prestamo_observacion" maxlength="400">
+                                <input type="text" pattern="[a-zA-z0-9áéíóúÁÉÍÓÚñÑ#() ]{1,400}" class="form-control" name="prestamo_observacion_up" value="<?php echo $campos['prestamo_observacion']; ?>" id="prestamo_pagado" id="prestamo_observacion" maxlength="400">
                             </div>
                         </div>
                     </div>
