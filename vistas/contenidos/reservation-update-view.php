@@ -54,13 +54,17 @@
             </div>
     <?php } else { ?>
 	<div class="container-fluid form-neon">
+    <?php
+     if ($campos['prestamo_pagado'] != $campos['prestamo_total']) {
+    ?>
         <div class="container-fluid">
             <p class="text-center roboto-medium">AGREGAR NUEVO PAGO A ESTE PRÉSTAMO</p>
-            <p class="text-center">Este préstamo presenta un pago pendiente por la cantidad de <strong>$50</strong>, puede agregar un pago a este préstamo haciendo clic en el siguiente botón.</p>
+            <p class="text-center">Este préstamo presenta un pago pendiente por la cantidad de <strong><?php echo MONEDA.number_format(($campos['prestamo_total'] - $campos['prestamo_pagado']), 2, '.', ''); ?></strong>, puede agregar un pago a este préstamo haciendo clic en el siguiente botón.</p>
             <p class="text-center">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalPago"><i class="far fa-money-bill-alt"></i> &nbsp; Agregar pago</button>
             </p>
         </div>
+        <?php } ?>
         <div class="container-fluid">
             <div>
                 <span class="roboto-medium">CLIENTE:</span> 
@@ -187,7 +191,8 @@
     <!-- MODAL PAGOS -->
     <div class="modal fade" id="ModalPago" tabindex="-1" role="dialog" aria-labelledby="ModalPago" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form class="modal-content">
+            <form class="modal-content FormularioAjax" action="<?php echo SERVERURL; ?>ajax/prestamoAjax.php" method="POST"
+             data-form="save" autocomplete="off">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalPago">Agregar pago</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -204,17 +209,33 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                    $datos_pagos = $ins_prestamo->datos_prestamo_controlador("Pago",
+                                     $lc->encryption($campos['prestamo_codigo']));
+
+                                     if ($datos_pagos->rowCount() > 0) {
+                                        $datos_pagos = $datos_pagos->fetchAll();
+
+                                        foreach($datos_pagos as $pagos) {
+                                            echo '
+                                                <tr class="text-center">
+                                                    <td>'.date("d-m-Y", strtotime($pagos['pago_fecha'])).'</td>
+                                                    <td>'.MONEDA.$pagos['pago_total'].'</td>
+                                                </tr>';
+                                        }
+                                     } else {
+                                ?>
                                 <tr class="text-center">
-                                    <td>Fecha</td>
-                                    <td>Monto</td>
+                                    <td colspan="2">No hay pagos registrados</td>
                                 </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
                     <div class="container-fluid">
-                        <input type="hidden" name="pago_codigo_reg">
+                        <input type="hidden" name="pago_codigo_reg" value="<?php echo $lc->encryption($campos['prestamo_codigo']); ?>">
                         <div class="form-group">
-                            <label for="pago_monto_reg" class="bmd-label-floating">Monto en $</label>
+                            <label for="pago_monto_reg" class="bmd-label-floating">Monto en <?php echo MONEDA; ?></label>
                             <input type="text" pattern="[0-9.]{1,10}" class="form-control" name="pago_monto_reg" id="pago_monto_reg" maxlength="10" required="">
                         </div>
                     </div>
