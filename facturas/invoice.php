@@ -1,5 +1,18 @@
 <?php
-	
+	$peticionAjax = true;
+
+    require_once "../config/APP.php";
+
+	$id = (isset($_GET['id'])) ? $_GET['id'] : 0;
+
+	/*---------- Instancia al controlador préstamo ----------*/
+		require_once "../controladores/prestamoControlador.php";
+		$ins_prestamo = new prestamoControlador();
+
+		$datos_prestamo = $ins_prestamo->datos_prestamo_controlador("Unico", $id);
+
+		if ($datos_prestamo->rowCount() == 1) {
+			$datos_prestamo = $datos_prestamo->fetch();
 
 	require "./fpdf.php";
 
@@ -95,7 +108,7 @@
 
 	$pdf->Ln(15);
 
-	$pdf->MultiCell(0,9,utf8_decode("OBSERVACIÓN: ".$datos_prestamo['prestamo_observacion']),0,'J',false);
+	$pdf->MultiCell(0,9,utf8_decode("OBSERVACIÓN: "),0,'J',false);
 
 	$pdf->SetFont('Arial','',12);
 	if(true){
@@ -121,3 +134,28 @@
 
 
 	$pdf->Output("I","Factura_1.pdf",true);
+
+	} else {
+	?>
+	<!DOCTYPE html>
+	<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title><?php echo COMPANY; ?></title>
+		<?php include "../vistas/inc/Link.php"; ?>
+
+	</head>
+	<body>
+		<div class="full-box container-404">
+			<div>
+				<p class="text-center"><i class="fas fa-rocket fa-10x"></i></p>
+				<h1 class="text-center">Ocurrió un error</h1>
+				<p class="lead text-center">No hemos encontrado el préstamo seleccionado.</p>
+			</div>
+		</div>
+		<?php include "../vistas/inc/Script.php"; ?>
+	</body>
+	</html>
+	<?php } ?>
