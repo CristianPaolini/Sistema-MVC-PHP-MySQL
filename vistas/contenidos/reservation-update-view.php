@@ -113,7 +113,9 @@
                 </table>
             </div>
         </div>
-		<form action="" autocomplete="off">
+		<form class="FormularioAjax" action="<?php echo SERVERURL; ?>ajax/prestamoAjax.php" method="POST"
+             data-form="update" autocomplete="off">
+             <input type="hidden" name="prestamo_codigo_up" value="<?php echo $lc->encryption($campos['prestamo_codigo']); ?>">
             <fieldset>
                 <legend><i class="far fa-clock"></i> &nbsp; Fecha y hora de préstamo</legend>
                 <div class="container-fluid">
@@ -121,13 +123,13 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="prestamo_fecha_inicio">Fecha de préstamo</label>
-                                <input type="date" class="form-control" readonly="" id="prestamo_fecha_inicio">
+                                <input type="date" value="<?php echo $campos['prestamo_fecha_inicio']; ?>" class="form-control" readonly="" id="prestamo_fecha_inicio">
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="prestamo_hora_inicio">Hora de préstamo</label>
-                                <input type="text" class="form-control" readonly="" id="prestamo_hora_inicio">
+                                <input type="text" value="<?php echo $campos['prestamo_hora_inicio']; ?>" class="form-control" readonly="" id="prestamo_hora_inicio">
                             </div>
                         </div>
                     </div>
@@ -140,13 +142,13 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="prestamo_fecha_final">Fecha de entrega</label>
-                                <input type="date" class="form-control" readonly="" id="prestamo_fecha_final">
+                                <input type="date" value="<?php echo $campos['prestamo_fecha_final']; ?>" class="form-control" readonly="" id="prestamo_fecha_final">
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="prestamo_hora_final">Hora de entrega</label>
-                                <input type="text" class="form-control" readonly="" id="prestamo_hora_final">
+                                <input type="text" value="<?php echo $campos['prestamo_hora_final']; ?>" class="form-control" readonly="" id="prestamo_hora_final">
                             </div>
                         </div>
                     </div>
