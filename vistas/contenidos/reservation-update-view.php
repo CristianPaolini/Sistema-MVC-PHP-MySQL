@@ -65,10 +65,20 @@
             </p>
         </div>
         <?php } ?>
+
         <div class="container-fluid">
+            <?php
+                require_once "./controladores/clienteControlador.php";
+
+                $ins_cliente = new clienteControlador();
+        
+                $datos_cliente = $ins_cliente->datos_cliente_controlador("Unico", $lc->encryption($campos['cliente_id'])); 
+
+                $datos_cliente = $datos_cliente->fetch();
+            ?>
             <div>
                 <span class="roboto-medium">CLIENTE:</span> 
-                &nbsp; Carlos Alfaro
+                &nbsp; <?php echo $datos_cliente['cliente_nombre']." ".$datos_cliente['cliente_apellido']; ?>
             </div>
             <div class="table-responsive">
                 <table class="table table-dark table-sm">
@@ -82,27 +92,23 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                            $datos_detalle = $ins_prestamo->datos_prestamo_controlador("Detalle", $lc->encryption($campos['prestamo_codigo']));
+
+                            $datos_detalle = $datos_detalle->fetchAll();
+
+                            foreach ($datos_detalle as $items) {
+                                $subtotal = $items['detalle_cantidad'] * ($items['detalle_costo_tiempo'] * $items['detalle_tiempo']);
+                                    $subtotal = number_format($subtotal, 2, '.', '');
+                        ?>
                         <tr class="text-center" >
-                            <td>Silla plastica</td>
-                            <td>7</td>
-                            <td>Hora</td>
-                            <td>$5.00</td>
-                            <td>$35.00</td>
+                            <td><?php echo $items['detalle_descripcion']; ?></td>
+                            <td><?php echo $items['detalle_cantidad']; ?></td>
+                            <td><?php echo $items['detalle_tiempo']. " ".$items['detalle_formato']; ?></td>
+                            <td><?php echo MONEDA.$items['detalle_costo_tiempo']. " x 1 ".$items['detalle_formato']; ?></td>
+                            <td><?php echo MONEDA.$subtotal; ?></td>
                         </tr>
-                        <tr class="text-center" >
-                            <td>Silla metalica</td>
-                            <td>9</td>
-                            <td>Día</td>
-                            <td>$5.00</td>
-                            <td>$45.00</td>
-                        </tr>
-                        <tr class="text-center" >
-                            <td>Mesa plastica</td>
-                            <td>5</td>
-                            <td>Evento</td>
-                            <td>$10.00</td>
-                            <td>$50.00</td>
-                        </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
