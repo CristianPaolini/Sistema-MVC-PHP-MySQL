@@ -853,4 +853,115 @@
                 }
                 echo json_encode($alerta);
         } /* Fin del controlador */
+
+        /*---------- Controlador agregar pago ----------*/
+        public function agregar_pago_controlador() {
+            /*== Recibiendo datos ==*/
+            $codigo = mainModel::decryption($_POST['pago_codigo_reg']);
+            $codigo = mainModel::limpiar_cadena($codigo);
+
+            $monto = mainModel::limpiar_cadena($_POST['pago_monto_reg']);
+
+            /*== Comprobando formato de pago ==*/
+            if ($monto <= 0 || !is_numeric($monto) || $monto == "") {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de PAGO no es válido",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            $monto = number_format($monto, 2, '.', '');
+
+            /*== Comprobando préstamo en BD ==*/
+            $datos_prestamo = mainModel::ejecutar_consulta_simple("SELECT * FROM prestamo WHERE prestamo_codigo = '$codigo'");
+
+            if ($datos_prestamo->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El préstamo al cual intenta agregar el pago no existe en el sistema.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            } else {
+                $datos_prestamo = $datos_prestamo->fetch();
+            }
+
+            /*== Comprobando que el monto no exceda el valor de lo que falta por pagar ==*/
+            $pendiente = number_format(($datos_prestamo['prestamo_total'] - $datos_prestamo['prestamo_pagado']), 2, '.', '');
+            if ($monto > $pendiente) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El monto que acaba de ingresar supera el saldo pendiente del préstamo.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Comprobar privilegios ==*/
+            session_start(['name'=>'SPM']);
+            if ($_SESSION['privilegio_spm'] < 1 || $_SESSION['privilegio_spm'] > 2) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No tiene los permisos necesarios para realizar esta operación.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+			
+			/*== Calculando el total a pagar ==*/
+            $total_pagado = number_format($monto + $datos_prestamo['prestamo_pagado'], 2, '.', '');
+            $fecha = date("Y-m-d");
+
+            $datos_pago_reg = [
+                "Total"=>$monto,
+                "Fecha"=>$fecha,
+                "Codigo"=>$codigo
+            ];
+
+            $agregar_pago = prestamoModelo::agregar_pago_modelo($datos_pago_reg);
+            if ($agregar_pago->rowCount() == 1) {
+                
+                $datos_prestamo_up = [
+                    "Tipo"=>"Pago",
+                    "Monto"=>$total_pagado,
+                    "Codigo"=>$codigo
+                ];
+
+                if (prestamoModelo::actualizar_prestamo_modelo($datos_prestamo_up)) {
+                    $alerta = [
+                        "Alerta"=>"recargar",
+                        "Titulo"=>"Pago realizado",
+                        "Texto"=>"El pago de ".MONEDA.$monto." se ha realizado con éxito",
+                        "Tipo"=>"success"
+                    ];
+                } else {
+                    prestamoModelo::eliminar_prestamo_modelo($codigo, "Pago");
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"No se pudo registrar el pago.",
+                        "Tipo"=>"error"
+                    ];
+                }
+                
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo registrar el pago. Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
+        } /* Fin del controlador */
     }
