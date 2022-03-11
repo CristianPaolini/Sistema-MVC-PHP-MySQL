@@ -107,7 +107,7 @@
             if ($datos['Tipo'] == "Pago") {
                 $sql = mainModel::conectar()->prepare("UPDATE prestamo SET prestamo_pagado = :Monto WHERE prestamo_codigo = :Codigo");
                 $sql->bindParam(":Monto", $datos['Monto']);
-            } elseif ($datos['Prestamo'] == "Pago") {
+            } elseif ($datos['Tipo'] == "Prestamo") {
                 $sql = mainModel::conectar()->prepare("UPDATE prestamo SET prestamo_estado = :Estado, prestamo_observacion = :Observacion WHERE prestamo_codigo = :Codigo");
                 $sql->bindParam(":Estado", $datos['Estado']);
                 $sql->bindParam(":Observacion", $datos['Observacion']);

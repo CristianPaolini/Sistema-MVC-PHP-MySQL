@@ -964,4 +964,90 @@
             }
             echo json_encode($alerta);
         } /* Fin del controlador */
+
+        /*---------- Controlador actualizar préstamo ----------*/
+        public function actualizar_prestamo_controlador() {
+            /*== Recibiendo datos ==*/
+            $codigo = mainModel::decryption($_POST['prestamo_codigo_up']);
+            $codigo = mainModel::limpiar_cadena($codigo);
+
+            /*== Comprobando préstamo en BD ==*/
+            $check_prestamo = mainModel::ejecutar_consulta_simple("SELECT prestamo_codigo FROM prestamo WHERE prestamo_codigo = '$codigo'");
+
+            if ($check_prestamo->rowCount() <= 0) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El préstamo que intenta actualizar no existe en el sistema.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            } 
+
+            /*== Recibiendo datos ==*/
+            $estado = mainModel::limpiar_cadena($_POST['prestamo_estado_up']);
+            $observacion = mainModel::limpiar_cadena($_POST['prestamo_observacion_up']);
+
+            if ($observacion != "") {
+                if (mainModel::verificar_datos("[a-zA-z0-9áéíóúÁÉÍÓÚñÑ#() ]{1,400}", $observacion)) {
+                    $alerta = [
+                        "Alerta"=>"simple",
+                        "Titulo"=>"Ocurrió un error inesperado",
+                        "Texto"=>"El formato de OBSERVACIÓN no es válido.",
+                        "Tipo"=>"error"
+                    ];
+                    echo json_encode($alerta);
+                    exit();
+                }
+            }
+
+            if ($estado != "Reservacion" && $estado != "Prestamo" && $estado != "Finalizado") {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"El formato de ESTADO no es válido.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            /*== Comprobando privilegios ==*/
+            session_start(['name'=>'SPM']);
+            if ($_SESSION['privilegio_spm'] < 1 || $_SESSION['privilegio_spm'] > 2) {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No tiene los permisos necesarios para realizar esta operación.",
+                    "Tipo"=>"error"
+                ];
+                echo json_encode($alerta);
+                exit();
+            }
+
+            $datos_prestamo_up = [
+                "Tipo"=>"Prestamo",
+                "Estado"=>$estado,
+                "Observacion"=>$observacion,
+                "Codigo"=>$codigo
+            ];
+
+            if (prestamoModelo::actualizar_prestamo_modelo($datos_prestamo_up)) {
+                $alerta = [
+                    "Alerta"=>"recargar",
+                    "Titulo"=>"Préstamo actualizado",
+                    "Texto"=>"Los datos del préstamo han sido actualizados con éxito.",
+                    "Tipo"=>"success"
+                ];
+            } else {
+                $alerta = [
+                    "Alerta"=>"simple",
+                    "Titulo"=>"Ocurrió un error inesperado",
+                    "Texto"=>"No se pudo actualizar el préstamo. Por favor, intente nuevamente.",
+                    "Tipo"=>"error"
+                ];
+            }
+            echo json_encode($alerta);
+        } /* Fin del controlador */
     }
