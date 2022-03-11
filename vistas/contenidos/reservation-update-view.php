@@ -1,3 +1,9 @@
+<?php
+	if ($_SESSION['privilegio_spm'] < 1 || $_SESSION['privilegio_spm'] > 2) {
+		echo $lc->forzar_cierre_sesion_controlador();
+		exit();
+	}
+?>
 <div class="full-box page-header">
     <h3 class="text-left">
         <i class="fas fa-sync-alt fa-fw"></i> &nbsp; ACTUALIZAR PRÉSTAMO
@@ -28,7 +34,25 @@
 </div>
 
 <div class="container-fluid">
+    <?php
+		require_once "./controladores/prestamoControlador.php";
 
+		$ins_prestamo = new prestamoControlador();
+
+		$datos_prestamo = $ins_prestamo->datos_prestamo_controlador("Unico", $pagina[1]); // $pagina[0] = vista actual, $pagina[1] = id del cliente (encriptado)
+
+		if ($datos_prestamo->rowCount() == 1) {
+
+			$campos = $datos_prestamo->fetch();
+
+            if ($campos['prestamo_estado'] == "Finalizado" && $campos['prestamo_pagado'] == $campos['prestamo_total']) {               
+	?>
+            <div class="alert alert-danger text-center" role="alert">
+                <p><i class="fas fa-exclamation-triangle fa-5x"></i></p>
+                <h4 class="alert-heading">¡Ocurrió un error inesperado!</h4>
+                <p class="mb-0">Lo sentimos, no podemos actualizar el préstamo debido a que ya se encuentra cancelado y finalizado.</p>
+            </div>
+    <?php } else { ?>
 	<div class="container-fluid form-neon">
         <div class="container-fluid">
             <p class="text-center roboto-medium">AGREGAR NUEVO PAGO A ESTE PRÉSTAMO</p>
@@ -202,11 +226,14 @@
             </form>
         </div>
     </div>
-    
+    <?php
+            }
+        } else {
+    ?>
     <div class="alert alert-danger text-center" role="alert">
         <p><i class="fas fa-exclamation-triangle fa-5x"></i></p>
         <h4 class="alert-heading">¡Ocurrió un error inesperado!</h4>
         <p class="mb-0">Lo sentimos, no podemos mostrar la información solicitada debido a un error.</p>
     </div>
-
+    <?php } ?>
 </div>
