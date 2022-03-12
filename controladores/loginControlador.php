@@ -74,7 +74,11 @@ if ($peticionAjax) {
                 $_SESSION['privilegio_spm'] = $row['usuario_privilegio'];
                 $_SESSION['token_spm'] = md5(uniqid(mt_rand(), true));
 
-                return header("Location: ".SERVERURL."home/");
+                if (headers_sent()) {
+                    echo "<script> window.location.href='".SERVERURL."home/'; </script>";
+                } else {
+                    return header("Location: ".SERVERURL."home/");
+                }
 
             } else {
                 echo '
@@ -97,7 +101,7 @@ if ($peticionAjax) {
             session_unset();
             session_destroy();
             if (headers_sent()) {
-                return "<script> window.location.href='".SERVERURL."login/'; </script>";
+                echo "<script> window.location.href='".SERVERURL."login/'; </script>";
             } else {
                 return header("Location: ".SERVERURL."login/");
             }
