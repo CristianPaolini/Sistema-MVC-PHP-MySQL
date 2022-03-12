@@ -107,35 +107,43 @@
 
 	$pdf->SetTextColor(97,97,97);
 
+	/*== Detalles del préstamo ==*/
+	$datos_detalle = $ins_prestamo->datos_prestamo_controlador("Detalle", $ins_prestamo->encryption($datos_prestamo['prestamo_codigo']));
+	$datos_detalle = $datos_detalle->fetchAll();
 
-	$pdf->Cell(15,10,utf8_decode(2000),'L',0,'C');
-	$pdf->Cell(90,10,utf8_decode("00000 - silla plastica blanca"),'L',0,'C');
-	$pdf->Cell(51,10,utf8_decode("7 Evento ($10.00 c/u)"),'L',0,'C');
-	$pdf->Cell(25,10,utf8_decode("$100,000.00"),'LR',0,'C');
-	$pdf->Ln(10);
-	$pdf->Cell(15,10,utf8_decode(2000),'L',0,'C');
-	$pdf->Cell(90,10,utf8_decode("00000 - Mesa plastica roja"),'L',0,'C');
-	$pdf->Cell(51,10,utf8_decode("10 Evento ($10.00 c/u)"),'L',0,'C');
-	$pdf->Cell(25,10,utf8_decode("$100,000.00"),'LR',0,'C');
+	$total = 0;
 
-	$pdf->Ln(10);
+	foreach($datos_detalle as $items) {
 
+		$subtotal = $items['detalle_cantidad'] * ($items['detalle_costo_tiempo'] * $items['detalle_tiempo']);
+        $subtotal = number_format($subtotal, 2, '.', '');
+
+		$pdf->Cell(15,10,utf8_decode($items['detalle_cantidad']),'L',0,'C');
+		$pdf->Cell(90,10,utf8_decode($items['detalle_descripcion']),'L',0,'C');
+		$pdf->Cell(51,10,utf8_decode($items['detalle_tiempo']." ".$items['detalle_formato']." (".MONEDA.$items['detalle_costo_tiempo']." c/u)"),'L',0,'C');
+		$pdf->Cell(25,10,utf8_decode(MONEDA.$subtotal),'LR',0,'C');
+
+		$pdf->Ln(10);
+
+		$total += $subtotal;
+}
 	$pdf->SetTextColor(33,33,33);
 	$pdf->Cell(15,10,utf8_decode(''),'T',0,'C');
 	$pdf->Cell(90,10,utf8_decode(''),'T',0,'C');
 	$pdf->Cell(51,10,utf8_decode('TOTAL'),'LTB',0,'C');
-	$pdf->Cell(25,10,utf8_decode("$100,000.00"),'LRTB',0,'C');
+	$pdf->Cell(25,10,utf8_decode(MONEDA.number_format($total, 2, '.', '')),'LRTB',0,'C');
 
 	$pdf->Ln(15);
 
-	$pdf->MultiCell(0,9,utf8_decode("OBSERVACIÓN: "),0,'J',false);
+	$pdf->MultiCell(0,9,utf8_decode("OBSERVACIÓN: ".$datos_prestamo['prestamo_observacion']),0,'J',false);
 
 	$pdf->SetFont('Arial','',12);
-	if(true){
+
+	if($datos_prestamo['prestamo_pagado'] < $datos_prestamo['prestamo_total']){
 		$pdf->Ln(12);
 
 		$pdf->SetTextColor(97,97,97);
-		$pdf->MultiCell(0,9,utf8_decode("NOTA IMPORTANTE: \nEsta factura presenta un saldo pendiente de pago por la cantidad de $.00"),0,'J',false);
+		$pdf->MultiCell(0,9,utf8_decode("NOTA IMPORTANTE: \nEsta factura presenta un saldo pendiente de pago por la cantidad de ".MONEDA.number_format(($datos_prestamo['prestamo_total'] - $datos_prestamo['prestamo_pagado']), 2, '.', '')),0,'J',false);
 	}
 
 	$pdf->Ln(25);
@@ -143,17 +151,17 @@
 	/*----------  INFO. EMPRESA  ----------*/
 	$pdf->SetFont('Arial','B',9);
 	$pdf->SetTextColor(33,33,33);
-	$pdf->Cell(0,6,utf8_decode("NOMBRE DE LA EMPRESA"),0,0,'C');
+	$pdf->Cell(0,6,utf8_decode($datos_empresa['empresa_nombre']),0,0,'C');
 	$pdf->Ln(6);
 	$pdf->SetFont('Arial','',9);
-	$pdf->Cell(0,6,utf8_decode("DIRECCION DE LA EMPRESA"),0,0,'C');
+	$pdf->Cell(0,6,utf8_decode($datos_empresa['empresa_direccion']),0,0,'C');
 	$pdf->Ln(6);
-	$pdf->Cell(0,6,utf8_decode("Teléfono: "),0,0,'C');
+	$pdf->Cell(0,6,utf8_decode("Teléfono: ".$datos_empresa['empresa_telefono']),0,0,'C');
 	$pdf->Ln(6);
-	$pdf->Cell(0,6,utf8_decode("Correo: "),0,0,'C');
+	$pdf->Cell(0,6,utf8_decode("Correo: ".$datos_empresa['empresa_email']),0,0,'C');
 
 
-	$pdf->Output("I","Factura_1.pdf",true);
+	$pdf->Output("I","Factura_".$datos_prestamo['prestamo_id'].".pdf",true);
 
 	} else {
 	?>
