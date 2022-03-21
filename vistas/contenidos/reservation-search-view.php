@@ -31,7 +31,7 @@
 		!isset($_SESSION['fecha_final_prestamo']) && empty($_SESSION['fecha_final_prestamo'])) { // Muestra solo el formulario si están vacías
 ?>
 <div class="container-fluid">
-	<form class="form-neon FormularioAjax" action="<?php echo SERVERURL; ?>ajax/buscadorAjax.php" method="POST" data-form="search"
+	<form class="form-neon FormularioAjax" action="<?php echo SERVERURL; ?>ajax/buscadorAjax.php" method="POST" data-form="default"
 	 autocomplete="off">
 		<input type="hidden" name="modulo" value="prestamo"> <!-- Value viene de buscadorAjax, como en las otras views Search -->
 		<div class="container-fluid">
